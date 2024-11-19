@@ -15,7 +15,7 @@ if not os.path.isfile(MODEL_PATH):
     raise FileNotFoundError(f"Model file {MODEL_PATH} does not exist.")
 model = joblib.load(MODEL_PATH)
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['POST', 'GET'])
 def predict():
     try:
         # Get JSON data from request
