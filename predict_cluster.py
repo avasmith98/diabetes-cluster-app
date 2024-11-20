@@ -12,16 +12,30 @@ import pandas as pd
 app = Flask(__name__, static_folder="build")
 CORS(app)  # Enable CORS for all routes
 
-
 # Set up PostgreSQL database URI
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
-    'DATABASE_URL',
-    'postgresql://u8o05n5m5i3uvf:p0665b364477ccf9d7a95ae0275a52d5de5e493f0a0eaae3978f52da9b5660df1@c5p86clmevrg5s.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d85p6inov3csp6'
-)
+database_url = os.environ.get('DATABASE_URL')
+
+# Fix the URL for SQLAlchemy compatibility
+if database_url and database_url.startswith("postgres://"):
+    database_url = database_url.replace("postgres://", "postgresql://", 1)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize the database
 db = SQLAlchemy(app)
+
+class PredictionData(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    gad = db.Column(db.Integer, nullable=False)
+    hba1c = db.Column(db.Float, nullable=False)
+    bmi = db.Column(db.Float, nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    cpeptide = db.Column(db.Float, nullable=False)
+    glucose = db.Column(db.Float, nullable=False)
+    medications = db.Column(db.JSON, nullable=False)  # Store medications as JSON
+    cluster_label = db.Column(db.String(50), nullable=False)
+    probabilities = db.Column(db.JSON, nullable=False)
 
 #Initialize Flask-Migrate
 migrate = Migrate(app, db)
@@ -85,6 +99,21 @@ def predict():
     cluster_dict = {0: "SAID", 1: "SIDD", 2: "SIRD", 3: "MOD", 4: "MARD"}
     cluster_label = cluster_dict[cluster]
 
+    # Save prediction data to the database
+    prediction_data = PredictionData(
+        gad=gad,
+        hba1c=hba1c,
+        bmi=bmi,
+        age=age,
+        cpeptide=cpeptide,
+        glucose=glucose,
+        medications=data.get('medications', {}),  # Default to empty dict if not provided
+        cluster_label=cluster_label,
+        probabilities=cluster_prob_rounded,
+    )
+    db.session.add(prediction_data)
+    db.session.commit()
+
     # Return output
     output = {
         'cluster_label': cluster_label,
@@ -100,6 +129,25 @@ def serve_react(path):
         return send_from_directory(app.static_folder, path)
     else:
         return send_from_directory(app.static_folder, "index.html")
+@app.route('/data', methods=['GET'])
+def get_data():
+    predictions = PredictionData.query.all()
+    results = [
+        {
+            'id': record.id,
+            'gad': record.gad,
+            'hba1c': record.hba1c,
+            'bmi': record.bmi,
+            'age': record.age,
+            'cpeptide': record.cpeptide,
+            'glucose': record.glucose,
+            'medications': record.medications,
+            'cluster_label': record.cluster_label,
+            'probabilities': record.probabilities,
+        }
+        for record in predictions
+    ]
+    return jsonify(results)
 
 
 if __name__ == "__main__":
