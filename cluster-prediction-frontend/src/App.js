@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
 
+const API_URL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://127.0.0.1:5000' // Local Flask server
+    : 'https://diabetes-cluster-b062f200dfdc.herokuapp.com/'; // Deployed Flask server
+
 function App() {
   const [inputs, setInputs] = useState({
     gad: '',
@@ -109,7 +114,7 @@ function App() {
         medications: currentMedications,
       };
 
-      const response = await axios.post('http://127.0.0.1:5000/predict', numericInputs);
+      const response = await axios.post(`${API_URL}/predict`, numericInputs);
       setResult(response.data);
     } catch (error) {
       console.error('Error:', error);
