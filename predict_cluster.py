@@ -1,6 +1,7 @@
 
 from flask import Flask, request, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from flask_cors import CORS 
 import os
 import joblib
@@ -15,13 +16,15 @@ CORS(app)  # Enable CORS for all routes
 # Set up PostgreSQL database URI
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     'DATABASE_URL',
-    'postgres://u8o05n5m5i3uvf:p0665b364477ccf9d7a95ae0275a52d5de5e493f0a0eaae3978f52da9b5660df1@c5p86clmevrg5s.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d85p6inov3csp6'
+    'postgresql://u8o05n5m5i3uvf:p0665b364477ccf9d7a95ae0275a52d5de5e493f0a0eaae3978f52da9b5660df1@c5p86clmevrg5s.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d85p6inov3csp6'
 )
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize the database
 db = SQLAlchemy(app)
 
+#Initialize Flask-Migrate
+migrate = Migrate(app, db)
 
 # Load model
 MODEL_PATH = 'full_linear_rf_model.joblib'
