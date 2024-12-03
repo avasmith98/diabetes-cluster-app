@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
-import { v4 as uuidv4 } from 'uuid'; // For generating unique user IDs
 
 const API_URL =
   process.env.NODE_ENV === 'development'
@@ -15,7 +14,7 @@ function App() {
     bmi: '',
     age: '',
     cpeptide: '',
-    glucose: ''
+    glucose: '',
   });
   const [glucoseUnit, setGlucoseUnit] = useState('');
   const [cpeptideUnit, setCpeptideUnit] = useState('');
@@ -40,12 +39,6 @@ function App() {
   });
   const [submissionStatus, setSubmissionStatus] = useState('');
   const [medicationError, setMedicationError] = useState('');
-  const [userId, setUserId] = useState(localStorage.getItem('userId') || uuidv4()); // Generate or fetch user ID
-
-  useEffect(() => {
-    // Store userId in local storage
-    localStorage.setItem('userId', userId);
-  }, [userId]);
 
   const medicationLabels = {
     insulin: 'Insulin',
@@ -53,7 +46,7 @@ function App() {
     sglt2Inhibitor: 'SGLT2 Inhibitor',
     metformin: 'Metformin',
     other: 'Other',
-    none: 'None'
+    none: 'None',
   };
 
   const handleChange = (e) => {
@@ -99,8 +92,7 @@ function App() {
     }
 
     try {
-      const numericInputs = {
-        user_id: userId,
+      const response = await axios.post(`${API_URL}/predict`, {
         gad: inputs.gad === 'Positive' ? 1 : 0,
         hba1c: parseFloat(inputs.hba1c),
         bmi: parseFloat(inputs.bmi),
@@ -110,9 +102,7 @@ function App() {
         cpeptide_unit: cpeptideUnit,
         glucose_unit: glucoseUnit,
         medications: currentMedications,
-      };
-
-      const response = await axios.post(`${API_URL}/predict`, numericInputs);
+      });
       setResult(response.data);
     } catch (error) {
       console.error('Error:', error);
@@ -124,23 +114,13 @@ function App() {
     }
   };
 
-  const handleMedicationSubmit = async () => {
+  const handleMedicationSubmit = () => {
     if (isManagementChanged === 'yes' && !Object.values(futureMedications).some((checked) => checked)) {
       setMedicationError('Please select at least one medication going forward.');
-      return;
-    }
-
-    try {
-      await axios.post(`${API_URL}/submit_medications`, {
-        user_id: userId,
-        isManagementChanged: isManagementChanged,
-        medications: futureMedications,
-      });
-
+    } else {
+      setMedicationError('');
+      console.log('Future medications selected:', futureMedications);
       setSubmissionStatus('Medications have been saved successfully.');
-    } catch (error) {
-      console.error('Error:', error);
-      setMedicationError('Failed to save medications. Please try again.');
     }
   };
 
@@ -148,9 +128,28 @@ function App() {
     <div className="app-container">
       <div className="form-container">
         <h2>Diabetes Cluster Prediction</h2>
-        <p>This app should not be used for monogenic forms of diabetes.</p>
-        <form onSubmit={handleSubmit}>
-          {/* Input fields */}
+        <p style={{ marginBottom: '20px' }}>This app should not be used for monogenic forms of diabetes. This prediction model has an average sensitivity of 93% and specificity of 98%.</p>
+
+        <div>
+          <label className="current-medications-label">Current Medications:</label>
+          {Object.keys(currentMedications).map((medication) => (
+            <div key={medication} className={medication === 'none' ? 'last-medication-option' : ''}>
+              <label className="medication-label">
+                <input
+                  type="checkbox"
+                  name={medication}
+                  checked={currentMedications[medication]}
+                  onChange={handleCheckboxChange}
+                />
+                {medicationLabels[medication]}
+              </label>
+            </div>
+          ))}
+        </div>
+
+        <p style={{ marginBottom: '20px' }}>Next, please enter all values as recorded at the time or closest to the patient’s initial diabetes diagnosis.</p>
+
+        <form onSubmit={handleSubmit} className="prediction-form">
           <div className="input-group">
             <label>GAD Antibodies:</label>
             <select
@@ -158,12 +157,14 @@ function App() {
               value={inputs.gad}
               onChange={handleChange}
               required
+              className={inputs.gad === '' ? 'placeholder' : 'valid'}
             >
               <option value="" disabled hidden>Select GAD Status</option>
               <option value="Positive">Positive</option>
               <option value="Negative">Negative</option>
             </select>
           </div>
+
           <div className="input-group">
             <label>HbA1c (%):</label>
             <input
@@ -175,6 +176,7 @@ function App() {
               required
             />
           </div>
+
           <div className="input-group">
             <label>BMI (kg/m²):</label>
             <input
@@ -186,6 +188,7 @@ function App() {
               required
             />
           </div>
+
           <div className="input-group">
             <label>Age (Years):</label>
             <input
@@ -197,9 +200,10 @@ function App() {
               required
             />
           </div>
+
           <div className="input-group">
             <label>C-peptide:</label>
-            <div>
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
               <input
                 type="number"
                 name="cpeptide"
@@ -207,12 +211,15 @@ function App() {
                 onChange={handleChange}
                 placeholder="C-peptide"
                 required
+                style={{ width: '55%' }}
               />
               <select
                 name="cpeptideUnit"
                 value={cpeptideUnit}
                 onChange={(e) => setCpeptideUnit(e.target.value)}
                 required
+                className={cpeptideUnit === '' ? 'placeholder' : 'valid'}
+                style={{ width: '45%' }}
               >
                 <option value="" disabled hidden>Select Unit</option>
                 <option value="nmol/L">nmol/L</option>
@@ -220,9 +227,10 @@ function App() {
               </select>
             </div>
           </div>
+
           <div className="input-group">
             <label>Glucose:</label>
-            <div>
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
               <input
                 type="number"
                 name="glucose"
@@ -230,47 +238,98 @@ function App() {
                 onChange={handleChange}
                 placeholder="Glucose"
                 required
+                style={{ width: '55%' }}
               />
               <select
                 name="glucoseUnit"
                 value={glucoseUnit}
                 onChange={(e) => setGlucoseUnit(e.target.value)}
                 required
+                className={glucoseUnit === '' ? 'placeholder' : 'valid'}
+                style={{ width: '45%' }}
               >
                 <option value="" disabled hidden>Select Unit</option>
-                <option value="mmol/L">mmol/L</option>
                 <option value="mg/dL">mg/dL</option>
+                <option value="mmol/L">mmol/L</option>
               </select>
             </div>
           </div>
-          <button type="submit" className="submit-button">
-            Predict and Submit to Database
-          </button>
+
+          <button type="submit" className="submit-button">Predict</button>
         </form>
 
-        {errorMessage && <div className="error-message">{errorMessage}</div>}
+        {errorMessage && <div className="error-message"><p>{errorMessage}</p></div>}
+
         {result && (
           <div className="result-container">
             <h3>Prediction Result</h3>
             <p><strong>Predicted Cluster:</strong> {result.cluster_label}</p>
-            <div><strong>Probabilities:</strong></div>
-            {result.probabilities.map((prob, index) => (
-              <p key={index}>Cluster {index + 1}: {prob * 100}%</p>
-            ))}
+            <p><strong>Probabilities:</strong></p>
+            <div>SAID: {(result.probabilities[0] * 100).toFixed(2)}%</div>
+            <div>SIDD: {(result.probabilities[1] * 100).toFixed(2)}%</div>
+            <div>SIRD: {(result.probabilities[2] * 100).toFixed(2)}%</div>
+            <div>MOD: {(result.probabilities[3] * 100).toFixed(2)}%</div>
+            <div>MARD: {(result.probabilities[4] * 100).toFixed(2)}%</div>
+
+            <div style={{ marginTop: '20px' }}>
+              <p><strong>Is this prediction going to change your management?</strong></p>
+              <label>
+                <input
+                  type="radio"
+                  name="isManagementChanged"
+                  value="yes"
+                  onChange={() => setIsManagementChanged('yes')}
+                />
+                Yes
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="isManagementChanged"
+                  value="no"
+                  onChange={() => setIsManagementChanged('no')}
+                />
+                No
+              </label>
+            </div>
+
+            {(isManagementChanged === 'yes' || isManagementChanged === 'no') && (
+              <div style={{ marginTop: '20px' }}>
+                {isManagementChanged === 'yes' && (
+                  <div>
+                    <p><strong>Medication going forward after this visit:</strong></p>
+                    {Object.keys(futureMedications).map((medication) => (
+                      <div key={medication}>
+                        <label>
+                          <input
+                            type="checkbox"
+                            name={medication}
+                            checked={futureMedications[medication]}
+                            onChange={handleFutureMedicationChange}
+                          />
+                          {medicationLabels[medication]}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {medicationError && <div className="error-message"><p>{medicationError}</p></div>}
+
+                <button
+                  type="button"
+                  className="submit-button"
+                  onClick={handleMedicationSubmit}
+                  disabled={isManagementChanged === 'yes' && !Object.values(futureMedications).some((checked) => checked)}
+                >
+                  Submit Medications
+                </button>
+
+                {submissionStatus && <div className="submission-status"><p>{submissionStatus}</p></div>}
+              </div>
+            )}
           </div>
         )}
-
-        <div>
-          <h3>Management Changes</h3>
-          <button
-            type="button"
-            className="submit-button"
-            onClick={handleMedicationSubmit}
-          >
-            Submit to Database
-          </button>
-          {submissionStatus && <div>{submissionStatus}</div>}
-        </div>
       </div>
     </div>
   );
