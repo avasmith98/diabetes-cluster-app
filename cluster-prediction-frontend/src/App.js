@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid'; // For generating unique IDs
 import './App.css';
 
 const API_URL =
@@ -39,6 +40,7 @@ function App() {
   });
   const [submissionStatus, setSubmissionStatus] = useState('');
   const [medicationError, setMedicationError] = useState('');
+  const [userId, setUserId] = useState(null); // Generate a new user ID for each session
 
   const medicationLabels = {
     insulin: 'Insulin',
@@ -51,13 +53,7 @@ function App() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'glucose' || name === 'cpeptide') {
-      if (value === '' || /^[0-9]*\.?[0-9]*$/.test(value)) {
-        setInputs({ ...inputs, [name]: value });
-      }
-    } else {
-      setInputs({ ...inputs, [name]: value });
-    }
+    setInputs({ ...inputs, [name]: value });
   };
 
   const handleCheckboxChange = (e) => {
@@ -92,7 +88,11 @@ function App() {
     }
 
     try {
+      const generatedUserId = uuidv4(); // Generate a new user ID for this submission
+      setUserId(generatedUserId);
+
       const response = await axios.post(`${API_URL}/predict`, {
+        user_id: generatedUserId,
         gad: inputs.gad === 'Positive' ? 1 : 0,
         hba1c: parseFloat(inputs.hba1c),
         bmi: parseFloat(inputs.bmi),
@@ -114,13 +114,27 @@ function App() {
     }
   };
 
-  const handleMedicationSubmit = () => {
+  const handleMedicationSubmit = async () => {
+    if (!userId) {
+      setMedicationError('No patient data available. Please complete the prediction form first.');
+      return;
+    }
+
     if (isManagementChanged === 'yes' && !Object.values(futureMedications).some((checked) => checked)) {
       setMedicationError('Please select at least one medication going forward.');
-    } else {
-      setMedicationError('');
-      console.log('Future medications selected:', futureMedications);
+      return;
+    }
+
+    try {
+      await axios.post(`${API_URL}/submit_medications`, {
+        user_id: userId, // Use the same user_id from the initial form submission
+        isManagementChanged,
+        medications: futureMedications,
+      });
       setSubmissionStatus('Medications have been saved successfully.');
+    } catch (error) {
+      console.error('Error:', error);
+      setMedicationError('Failed to save medications. Please try again.');
     }
   };
 
@@ -128,208 +142,52 @@ function App() {
     <div className="app-container">
       <div className="form-container">
         <h2>Diabetes Cluster Prediction</h2>
-        <p style={{ marginBottom: '20px' }}>This app should not be used for monogenic forms of diabetes. This prediction model has an average sensitivity of 93% and specificity of 98%.</p>
-
-        <div>
-          <label className="current-medications-label">Current Medications:</label>
-          {Object.keys(currentMedications).map((medication) => (
-            <div key={medication} className={medication === 'none' ? 'last-medication-option' : ''}>
-              <label className="medication-label">
-                <input
-                  type="checkbox"
-                  name={medication}
-                  checked={currentMedications[medication]}
-                  onChange={handleCheckboxChange}
-                />
-                {medicationLabels[medication]}
-              </label>
-            </div>
-          ))}
-        </div>
-
-        <p style={{ marginBottom: '20px' }}>Next, please enter all values as recorded at the time or closest to the patient’s initial diabetes diagnosis.</p>
-
-        <form onSubmit={handleSubmit} className="prediction-form">
+        <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label>GAD Antibodies:</label>
-            <select
-              name="gad"
-              value={inputs.gad}
-              onChange={handleChange}
-              required
-              className={inputs.gad === '' ? 'placeholder' : 'valid'}
-            >
+            <select name="gad" value={inputs.gad} onChange={handleChange} required>
               <option value="" disabled hidden>Select GAD Status</option>
               <option value="Positive">Positive</option>
               <option value="Negative">Negative</option>
             </select>
           </div>
-
           <div className="input-group">
             <label>HbA1c (%):</label>
-            <input
-              type="number"
-              name="hba1c"
-              value={inputs.hba1c}
-              onChange={handleChange}
-              placeholder="HbA1c (%)"
-              required
-            />
+            <input type="number" name="hba1c" value={inputs.hba1c} onChange={handleChange} required />
           </div>
-
           <div className="input-group">
             <label>BMI (kg/m²):</label>
-            <input
-              type="number"
-              name="bmi"
-              value={inputs.bmi}
-              onChange={handleChange}
-              placeholder="BMI (kg/m²)"
-              required
-            />
+            <input type="number" name="bmi" value={inputs.bmi} onChange={handleChange} required />
           </div>
-
           <div className="input-group">
             <label>Age (Years):</label>
-            <input
-              type="number"
-              name="age"
-              value={inputs.age}
-              onChange={handleChange}
-              placeholder="Age (Years)"
-              required
-            />
+            <input type="number" name="age" value={inputs.age} onChange={handleChange} required />
           </div>
-
           <div className="input-group">
             <label>C-peptide:</label>
-            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-              <input
-                type="number"
-                name="cpeptide"
-                value={inputs.cpeptide}
-                onChange={handleChange}
-                placeholder="C-peptide"
-                required
-                style={{ width: '55%' }}
-              />
-              <select
-                name="cpeptideUnit"
-                value={cpeptideUnit}
-                onChange={(e) => setCpeptideUnit(e.target.value)}
-                required
-                className={cpeptideUnit === '' ? 'placeholder' : 'valid'}
-                style={{ width: '45%' }}
-              >
-                <option value="" disabled hidden>Select Unit</option>
-                <option value="nmol/L">nmol/L</option>
-                <option value="ng/mL">ng/mL</option>
-              </select>
-            </div>
+            <input type="number" name="cpeptide" value={inputs.cpeptide} onChange={handleChange} required />
+            <select name="cpeptideUnit" value={cpeptideUnit} onChange={(e) => setCpeptideUnit(e.target.value)} required>
+              <option value="" disabled hidden>Select Unit</option>
+              <option value="nmol/L">nmol/L</option>
+              <option value="ng/mL">ng/mL</option>
+            </select>
           </div>
-
           <div className="input-group">
             <label>Glucose:</label>
-            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-              <input
-                type="number"
-                name="glucose"
-                value={inputs.glucose}
-                onChange={handleChange}
-                placeholder="Glucose"
-                required
-                style={{ width: '55%' }}
-              />
-              <select
-                name="glucoseUnit"
-                value={glucoseUnit}
-                onChange={(e) => setGlucoseUnit(e.target.value)}
-                required
-                className={glucoseUnit === '' ? 'placeholder' : 'valid'}
-                style={{ width: '45%' }}
-              >
-                <option value="" disabled hidden>Select Unit</option>
-                <option value="mg/dL">mg/dL</option>
-                <option value="mmol/L">mmol/L</option>
-              </select>
-            </div>
+            <input type="number" name="glucose" value={inputs.glucose} onChange={handleChange} required />
+            <select name="glucoseUnit" value={glucoseUnit} onChange={(e) => setGlucoseUnit(e.target.value)} required>
+              <option value="" disabled hidden>Select Unit</option>
+              <option value="mmol/L">mmol/L</option>
+              <option value="mg/dL">mg/dL</option>
+            </select>
           </div>
-
-          <button type="submit" className="submit-button">Predict</button>
+          <button type="submit">Predict</button>
         </form>
-
-        {errorMessage && <div className="error-message"><p>{errorMessage}</p></div>}
-
-        {result && (
-          <div className="result-container">
-            <h3>Prediction Result</h3>
-            <p><strong>Predicted Cluster:</strong> {result.cluster_label}</p>
-            <p><strong>Probabilities:</strong></p>
-            <div>SAID: {(result.probabilities[0] * 100).toFixed(2)}%</div>
-            <div>SIDD: {(result.probabilities[1] * 100).toFixed(2)}%</div>
-            <div>SIRD: {(result.probabilities[2] * 100).toFixed(2)}%</div>
-            <div>MOD: {(result.probabilities[3] * 100).toFixed(2)}%</div>
-            <div>MARD: {(result.probabilities[4] * 100).toFixed(2)}%</div>
-
-            <div style={{ marginTop: '20px' }}>
-              <p><strong>Is this prediction going to change your management?</strong></p>
-              <label>
-                <input
-                  type="radio"
-                  name="isManagementChanged"
-                  value="yes"
-                  onChange={() => setIsManagementChanged('yes')}
-                />
-                Yes
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="isManagementChanged"
-                  value="no"
-                  onChange={() => setIsManagementChanged('no')}
-                />
-                No
-              </label>
-            </div>
-
-            {(isManagementChanged === 'yes' || isManagementChanged === 'no') && (
-              <div style={{ marginTop: '20px' }}>
-                {isManagementChanged === 'yes' && (
-                  <div>
-                    <p><strong>Medication going forward after this visit:</strong></p>
-                    {Object.keys(futureMedications).map((medication) => (
-                      <div key={medication}>
-                        <label>
-                          <input
-                            type="checkbox"
-                            name={medication}
-                            checked={futureMedications[medication]}
-                            onChange={handleFutureMedicationChange}
-                          />
-                          {medicationLabels[medication]}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {medicationError && <div className="error-message"><p>{medicationError}</p></div>}
-
-                <button
-                  type="button"
-                  className="submit-button"
-                  onClick={handleMedicationSubmit}
-                  disabled={isManagementChanged === 'yes' && !Object.values(futureMedications).some((checked) => checked)}
-                >
-                  Submit Medications
-                </button>
-
-                {submissionStatus && <div className="submission-status"><p>{submissionStatus}</p></div>}
-              </div>
-            )}
-          </div>
-        )}
+        {result && <p>Prediction: {result.cluster_label}</p>}
+        <div>
+          <h3>Submit Follow-Up Medications</h3>
+          <button onClick={handleMedicationSubmit}>Submit Medications</button>
+        </div>
       </div>
     </div>
   );
