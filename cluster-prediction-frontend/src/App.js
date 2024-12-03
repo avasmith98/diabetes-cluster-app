@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid'; // Generate unique user IDs
 import './App.css';
 
 const API_URL =
@@ -40,15 +39,15 @@ function App() {
   });
   const [submissionStatus, setSubmissionStatus] = useState('');
   const [medicationError, setMedicationError] = useState('');
-  const [userId, setUserId] = useState(null); // Generate a unique user ID for this session
 
+  // Define labels for medication keys
   const medicationLabels = {
     insulin: 'Insulin',
     glp1rAgonist: 'GLP-1 Receptor Agonist',
     sglt2Inhibitor: 'SGLT2 Inhibitor',
     metformin: 'Metformin',
     other: 'Other',
-    none: 'None',
+    none: 'None'
   };
 
   const handleChange = (e) => {
@@ -94,9 +93,6 @@ function App() {
     }
 
     try {
-      const generatedUserId = uuidv4(); // Generate a unique user ID for this submission
-      setUserId(generatedUserId);
-
       let glucoseValue = parseFloat(inputs.glucose);
       let cpeptideValue = parseFloat(inputs.cpeptide);
 
@@ -109,7 +105,6 @@ function App() {
       }
 
       const numericInputs = {
-        user_id: generatedUserId,
         gad: inputs.gad === 'Positive' ? 1 : 0,
         hba1c: parseFloat(inputs.hba1c),
         bmi: parseFloat(inputs.bmi),
@@ -123,6 +118,10 @@ function App() {
 
       const response = await axios.post(`${API_URL}/predict`, numericInputs);
       setResult(response.data);
+
+      // Save user_id for the second submission to submit medications
+      setResult((prev) => ({ ...prev, user_id: response.data.user_id }));
+
     } catch (error) {
       console.error('Error:', error);
       if (error.response && error.response.data && error.response.data.error) {
@@ -134,19 +133,19 @@ function App() {
   };
 
   const handleMedicationSubmit = async () => {
-    if (!userId) {
-      setMedicationError('No patient data available. Please complete the prediction form first.');
-      return;
-    }
-
     if (isManagementChanged === 'yes' && !Object.values(futureMedications).some(checked => checked)) {
       setMedicationError('Please select at least one medication going forward.');
       return;
     }
 
     try {
+      if (!result?.user_id) {
+        setMedicationError('User ID missing. Please make a prediction first.');
+        return;
+      }
+
       await axios.post(`${API_URL}/submit_medications`, {
-        user_id: userId,
+        user_id: result.user_id, // Send the user ID returned from the prediction
         isManagementChanged,
         medications: futureMedications,
       });
@@ -163,7 +162,7 @@ function App() {
       <div className="form-container">
         <h2>Diabetes Cluster Prediction</h2>
         <p style={{ marginBottom: '20px' }}>This app should not be used for monogenic forms of diabetes. This prediction model has an average sensitivity of 93% and specificity of 98%.</p>
-
+        
         <div>
           <label className="current-medications-label">Current Medications:</label>
           {Object.keys(currentMedications).map((medication) => (
@@ -310,22 +309,22 @@ function App() {
             <div>MARD: {(result.probabilities[4] * 100).toFixed(2)}%</div>
 
             <div style={{ marginTop: '20px' }}>
-              <p><strong>Is this prediction going to change your management?</strong></p>
+              <p> <strong> Is this prediction going to change your management? </strong> </p>
               <label>
-                <input
-                  type="radio"
-                  name="isManagementChanged"
-                  value="yes"
-                  onChange={() => setIsManagementChanged('yes')}
+                <input 
+                  type="radio" 
+                  name="isManagementChanged" 
+                  value="yes" 
+                  onChange={() => setIsManagementChanged('yes')} 
                 />
                 Yes
               </label>
               <label>
-                <input
-                  type="radio"
-                  name="isManagementChanged"
-                  value="no"
-                  onChange={() => setIsManagementChanged('no')}
+                <input 
+                  type="radio" 
+                  name="isManagementChanged" 
+                  value="no" 
+                  onChange={() => setIsManagementChanged('no')} 
                 />
                 No
               </label>
@@ -335,15 +334,15 @@ function App() {
               <div style={{ marginTop: '20px' }}>
                 {isManagementChanged === 'yes' && (
                   <div>
-                    <p><strong>Medication going forward after this visit:</strong></p>
+                    <p> <strong>Medication going forward after this visit: </strong> </p> 
                     {Object.keys(futureMedications).map((medication) => (
                       <div key={medication}>
                         <label>
-                          <input
-                            type="checkbox"
-                            name={medication}
-                            checked={futureMedications[medication]}
-                            onChange={handleFutureMedicationChange}
+                          <input 
+                            type="checkbox" 
+                            name={medication} 
+                            checked={futureMedications[medication]} 
+                            onChange={handleFutureMedicationChange} 
                           />
                           {medicationLabels[medication]}
                         </label>
@@ -351,19 +350,27 @@ function App() {
                     ))}
                   </div>
                 )}
+                
+                {medicationError && (
+                  <div className="error-message">
+                    <p>{medicationError}</p>
+                  </div>
+                )}
 
-                {medicationError && <div className="error-message"><p>{medicationError}</p></div>}
-
-                <button
-                  type="button"
-                  className="submit-button"
+                <button 
+                  type="button" 
+                  className="submit-button" 
                   onClick={handleMedicationSubmit}
-                  disabled={isManagementChanged === 'yes' && !Object.values(futureMedications).some((checked) => checked)}
+                  disabled={isManagementChanged === 'yes' && !Object.values(futureMedications).some(checked => checked)}
                 >
                   Submit Medications
                 </button>
-
-                {submissionStatus && <div className="submission-status"><p>{submissionStatus}</p></div>}
+                
+                {submissionStatus && (
+                  <div className="submission-status">
+                    <p>{submissionStatus}</p>
+                  </div>
+                )}
               </div>
             )}
           </div>

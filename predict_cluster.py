@@ -1,10 +1,10 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 from flask_cors import CORS
 import os
 import joblib
 import pandas as pd
+import uuid
 
 # Create Flask app
 app = Flask(__name__, static_folder="build")
@@ -17,6 +17,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Initialize the database
 db = SQLAlchemy(app)
 
+# Define PredictionData model
 class PredictionData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.String(50), unique=True, nullable=False)
@@ -32,14 +33,12 @@ class PredictionData(db.Model):
     cluster_label = db.Column(db.String(50), nullable=False)
     probabilities = db.Column(db.JSON, nullable=False)
 
+# Define MedicationChange model
 class MedicationChange(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.String(50), db.ForeignKey('prediction_data.user_id'), nullable=False)
     is_management_changed = db.Column(db.Boolean, nullable=False)
     medications = db.Column(db.JSON, nullable=True)
-
-# Initialize Flask-Migrate
-migrate = Migrate(app, db)
 
 # Load model
 MODEL_PATH = 'full_linear_rf_model.joblib'
@@ -60,11 +59,9 @@ def predict():
         glucose = float(data['glucose'])
         cpeptide_unit = data.get('cpeptide_unit')  # Retrieve C-peptide unit
         glucose_unit = data.get('glucose_unit')  # Retrieve glucose unit
-        user_id = data.get('user_id')  # Use user_id from request
 
-        # Validate user_id
-        if not user_id:
-            return jsonify({'error': 'Missing user_id in request'}), 400
+        # Generate a new user_id for each prediction request
+        user_id = str(uuid.uuid4())
 
         # Validate units
         if cpeptide_unit not in ['nmol/L', 'ng/mL']:
@@ -192,7 +189,7 @@ def serve_react(path):
         return send_from_directory(app.static_folder, "index.html")
 
 with app.app_context():
-    db.create_all()
+    db.create_all()  # Create tables if they do not exist
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
