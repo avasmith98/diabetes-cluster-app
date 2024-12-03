@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
@@ -111,49 +112,30 @@ function App() {
         age: parseFloat(inputs.age),
         cpeptide: cpeptideValue,
         glucose: glucoseValue,
-        cpeptide_unit: cpeptideUnit,
-        glucose_unit: glucoseUnit,
         medications: currentMedications,
       };
 
       const response = await axios.post(`${API_URL}/predict`, numericInputs);
       setResult(response.data);
-
-      // Save user_id for the second submission to submit medications
-      setResult((prev) => ({ ...prev, user_id: response.data.user_id }));
-
     } catch (error) {
       console.error('Error:', error);
       if (error.response && error.response.data && error.response.data.error) {
         setErrorMessage(`Server Error: ${error.response.data.error}`);
+      } else if (error.response && error.response.status === 400) {
+        setErrorMessage('The input values are out of range. Please enter valid values within the accepted range.');
       } else {
         setErrorMessage('An unexpected error occurred. Please try again later.');
       }
     }
   };
 
-  const handleMedicationSubmit = async () => {
+  const handleMedicationSubmit = () => {
     if (isManagementChanged === 'yes' && !Object.values(futureMedications).some(checked => checked)) {
       setMedicationError('Please select at least one medication going forward.');
-      return;
-    }
-
-    try {
-      if (!result?.user_id) {
-        setMedicationError('User ID missing. Please make a prediction first.');
-        return;
-      }
-
-      await axios.post(`${API_URL}/submit_medications`, {
-        user_id: result.user_id, // Send the user ID returned from the prediction
-        isManagementChanged,
-        medications: futureMedications,
-      });
-
+    } else {
+      setMedicationError('');
+      console.log("Future medications selected:", futureMedications);
       setSubmissionStatus('Medications have been saved successfully.');
-    } catch (error) {
-      console.error('Error:', error);
-      setMedicationError('Failed to save medications. Please try again.');
     }
   };
 
