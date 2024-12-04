@@ -115,8 +115,17 @@ function App() {
         medications: currentMedications, 
       };
 
+      // Send the request to the prediction endpoint  
       const response = await axios.post(`${API_URL}/predict`, numericInputs);
-      setResult(response.data);
+      
+      // Check if we have a successful response and handle it
+      if (response.data) {
+        // Store the entire result
+        setResult(response.data);
+        // Store the prediction ID explicitly using the updated key name
+        setResult((prev) => ({ ...prev, predictionId: response.data.predictionId }));
+      }
+
     } catch (error) {
       console.error('Error:', error);
       if (error.response && error.response.data && error.response.data.error) {
