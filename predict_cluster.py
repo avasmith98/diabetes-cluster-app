@@ -143,7 +143,7 @@ def submit_medications():
         # Save medication change to the database
         medication_change = MedicationChange(
             is_management_changed=(is_management_changed == 'yes'),
-            medications= str(medications)
+            medications= medications
         )
 
         db.session.add(medication_change)
