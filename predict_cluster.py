@@ -6,6 +6,7 @@ from flask_cors import CORS
 import os
 import joblib
 import pandas as pd
+import json
 
 
 # Create Flask app
