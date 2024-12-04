@@ -47,6 +47,7 @@ body {
 
 .current-medications-label {
   font-weight: bold;
+  margin-left: 10px;
 }
 
 .medication-label {

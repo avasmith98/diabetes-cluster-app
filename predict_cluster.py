@@ -28,7 +28,7 @@ class PredictionData(db.Model):
     age = db.Column(db.Integer, nullable=False)
     cpeptide = db.Column(db.Float, nullable=False)
     glucose = db.Column(db.Float, nullable=False)
-    medications = db.Column(db.String(255), nullable=False)  # Store medications as JSON
+    medications = db.Column(db.String(255), nullable=False)  
     cluster_label = db.Column(db.String(50), nullable=False)
     probabilities = db.Column(db.JSON, nullable=False)
 
@@ -112,7 +112,7 @@ def predict():
         age=age,
         cpeptide=cpeptide,
         glucose=glucose,
-        medications=selected_medications,  
+        medications=medications,  
         cluster_label=cluster_label,
         probabilities=cluster_prob_rounded,
     )
