@@ -6,7 +6,7 @@ from flask_cors import CORS
 import os
 import joblib
 import pandas as pd
-import json
+
 
 
 # Create Flask app
@@ -29,14 +29,14 @@ class PredictionData(db.Model):
     age = db.Column(db.Integer, nullable=False)
     cpeptide = db.Column(db.Float, nullable=False)
     glucose = db.Column(db.Float, nullable=False)
-    medications = db.Column(db.String(255), nullable=False)  
+    medications = db.Column(db.JSON, nullable=False)  
     cluster_label = db.Column(db.String(50), nullable=False)
     probabilities = db.Column(db.JSON, nullable=False)
 
 class MedicationChange(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     is_management_changed = db.Column(db.Boolean, nullable=False)
-    medications = db.Column(db.String(255), nullable=True)
+    medications = db.Column(db.JSON, nullable=False)
 
 #Initialize Flask-Migrate
 migrate = Migrate(app, db)
@@ -61,7 +61,6 @@ def predict():
 
         #Extract medications from the request
         medications = data.get('medications', {})
-        medications_str = json.dumps(medications) if isinstance(medications, dict) else ""
 
     except (KeyError, ValueError):
         return jsonify({'error': 'Invalid input data'}), 400
@@ -113,7 +112,7 @@ def predict():
         age=age,
         cpeptide=cpeptide,
         glucose=glucose,
-        medications=medications_str,  
+        medications=medications,  
         cluster_label=cluster_label,
         probabilities=cluster_prob_rounded,
     )
@@ -136,9 +135,6 @@ def submit_medications():
         # Extract data from the request
         is_management_changed = data.get('isManagementChanged')
         medications = data.get('medications', {})
-        
-        # Convert medications to a list of selected ones
-        selected_medications = [med for med, selected in medications.items() if selected]
 
         # Check if the required fields are present
         if is_management_changed is None:
@@ -147,7 +143,7 @@ def submit_medications():
         # Save medication change to the database
         medication_change = MedicationChange(
             is_management_changed=(is_management_changed == 'yes'),
-            medications=', '.join(selected_medications)
+            medications= str(medications)
         )
 
         db.session.add(medication_change)
