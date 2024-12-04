@@ -371,7 +371,7 @@ function App() {
                   onClick={handleMedicationSubmit}
                   disabled={isManagementChanged === 'yes' && !Object.values(futureMedications).some(checked => checked)}
                 >
-                  Submit to database
+                  Save to database
                 </button>
                 
                 {submissionStatus && (
