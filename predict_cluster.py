@@ -122,6 +122,7 @@ def predict():
 
     # Return output
     output = {
+        'prediction_Id': prediction_data.id,
         'cluster_label': cluster_label,
         'probabilities': cluster_prob_rounded
     }
@@ -134,7 +135,7 @@ def submit_medications():
         data = request.get_json()
 
         # Extract data from the request
-        prediction_id = data.get('predictionID')
+        prediction_id = data.get('predictionId')
         is_management_changed = bool(data.get('isManagementChanged'))
         medications = data.get('medications', {})
 
