@@ -35,6 +35,7 @@ class PredictionData(db.Model):
 
 class MedicationChange(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    prediction_data_id = db.Column(db.Integer, db.ForeignKey('prediction_data.id'), nullable = False)
     is_management_changed = db.Column(db.Boolean, nullable=False)
     medications = db.Column(db.JSON, nullable=False)
 
@@ -133,17 +134,30 @@ def submit_medications():
         data = request.get_json()
 
         # Extract data from the request
+        prediction_id = data.get('predictionID')
         is_management_changed = bool(data.get('isManagementChanged'))
         medications = data.get('medications', {})
 
-        # Check if the required fields are present
-        if is_management_changed is None:
-            return jsonify({'error': 'Invalid input data. Fields "isManagementChanged" is required.'}), 400
+        # Validate prediction_id
+        if not prediction_id:
+            return jsonify({'error': 'Missing prediction_id'}), 400
 
+        # Retrieve the associated prediction record
+        prediction_data = PredictionData.query.get(prediction_id)
+        if not prediction_data:
+            return jsonify({'error': 'PredictionData not found'}), 404
+
+        # Convert is_management_changed to boolean
+        if isinstance(is_management_changed, str):
+            is_management_changed = is_management_changed.lower() in ['yes', 'true', '1']
+        elif not isinstance(is_management_changed, bool):
+            return jsonify({'error': 'Invalid input data for "isManagementChanged".'}), 400
+        
         # Save medication change to the database
         medication_change = MedicationChange(
-            is_management_changed=(is_management_changed == 'yes'),
-            medications= medications
+            prediction_data_id=prediction_data.id,
+            is_management_changed=is_management_changed,
+            medications=medications
         )
 
         db.session.add(medication_change)
