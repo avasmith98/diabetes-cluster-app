@@ -122,7 +122,7 @@ def predict():
 
     # Return output
     output = {
-        'prediction_Id': prediction_data.id,
+        'predictionId': prediction_data.id,
         'cluster_label': cluster_label,
         'probabilities': cluster_prob_rounded
     }
