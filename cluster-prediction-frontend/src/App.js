@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
@@ -27,6 +26,30 @@ function App() {
     other: false,
     none: false,
   });
+
+  const clusterExplanations = {
+    SAID: (
+      <>The data provided and the presence of GAD-autoantibodies suggest <strong>Severe Auto-Immune Diabetes (SAID)</strong> and thus <strong> Type 1 Diabetes </strong>. These patients are prone to microvascular complications and are at an elevated risk of DKA. Early and aggressive insulin therapy should be considered, and the use of SGLT2 inhibitors is potentially unsafe.
+      </>
+    ),
+    SIDD: (
+      <>The data provided including high HbA1c and relatively low C-peptide suggest <strong>Severe Insulin-Deficient Diabetes (SIDD)</strong> indicating loss of beta cell function. These patients are at high risk for micro- and macrovascular complications, and DKA. Aggressive glucose control is indicated. Insulin secretagogues including incretin-based therapies should be considered and early treatment with insulin might be needed and beneficial. SGLT2 inhibitors may also be considered in those with heart or kidney disease, but their use must be carefully weighed against the risk of DKA and closely monitored.
+      </>
+    ),
+    SIRD: (
+      <>The data provided including a relatively high C-peptide suggest <strong>Severe Insulin-Resistant Diabetes (SIRD)</strong>. These patients are at high risk for complications particularly nephropathy, MAFLD, and CVD. Aggressive glucose control is indicated. Early treatment with SGLT2 inhibitors or GLP1 RAs as well as adjuvant therapy with metformin should be considered. Insulin would typically be only required later in the disease process.
+      </>
+    ),
+    MOD: (
+      <>The data provided indicating a relatively high body mass index suggest <strong>Mild Obesity-related Diabetes (MOD)</strong>. These patients as less prone to complications. Weight loss with diet and exercise are of most importance. Metformin, SGLT2 inhibitors and GLP1 RAs might be beneficial as first line pharmacological therapies.
+      </>
+    ),
+    MARD: (
+      <>The data provided including a higher age at diagnosis suggest <strong>Mild Age-Related Diabetes (MARD)</strong>. The risk for complications is relatively lower. A more conservative therapeutic approach with safer drugs might be appropriate.
+      </>
+    ) 
+  };
+  
   const [result, setResult] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [isManagementChanged, setIsManagementChanged] = useState('');
@@ -312,17 +335,31 @@ function App() {
 
         {result && (
           <div className="result-container">
+            {/* Display the resulting cluster */}
             <h3>Prediction Result</h3>
             <p><strong>Predicted Cluster:</strong> {result.cluster_label}</p>
-            <p><strong>Probabilities:</strong></p>
-            <div>SAID: {(result.probabilities[0] * 100).toFixed(2)}%</div>
-            <div>SIDD: {(result.probabilities[1] * 100).toFixed(2)}%</div>
-            <div>SIRD: {(result.probabilities[2] * 100).toFixed(2)}%</div>
-            <div>MOD: {(result.probabilities[3] * 100).toFixed(2)}%</div>
-            <div>MARD: {(result.probabilities[4] * 100).toFixed(2)}%</div>
 
+            {/* Display the explanation for the cluster */}
+            <div className="explanation-box" style={{ marginTop: '20px' }}>
+              <h4>Cluster Explanation:</h4>
+              {clusterExplanations[result.cluster_label] || (
+                <p>No explanation available for this cluster.</p>
+              )}
+            </div>
+
+            {/* Display the probabilities */}
             <div style={{ marginTop: '20px' }}>
-              <p> <strong> Is this prediction going to change your management? </strong> </p>
+              <p><strong>Probabilities:</strong></p>
+              <div>SAID: {(result.probabilities[0] * 100).toFixed(2)}%</div>
+              <div>SIDD: {(result.probabilities[1] * 100).toFixed(2)}%</div>
+              <div>SIRD: {(result.probabilities[2] * 100).toFixed(2)}%</div>
+              <div>MOD: {(result.probabilities[3] * 100).toFixed(2)}%</div>
+              <div>MARD: {(result.probabilities[4] * 100).toFixed(2)}%</div>
+            </div>
+
+            {/* Display "Is this prediction going to change your management?" */}
+            <div style={{ marginTop: '20px' }}>
+              <p><strong>Is this prediction going to change your management?</strong></p>
               <label>
                 <input 
                   type="radio" 
@@ -342,7 +379,6 @@ function App() {
                 No
               </label>
             </div>
-
             {(isManagementChanged === 'yes' || isManagementChanged === 'no') && (
               <div style={{ marginTop: '20px' }}>
                 {isManagementChanged === 'yes' && (

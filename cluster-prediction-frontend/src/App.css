@@ -59,6 +59,20 @@ body {
   padding-bottom: 10px; 
 }
 
+.explanation-box {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-top: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+}
+
+.explanation-box h4 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
 h2 {
   text-align: center;
   margin-bottom: 10px; /* Reduce space for smaller screens */
