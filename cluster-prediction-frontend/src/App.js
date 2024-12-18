@@ -180,6 +180,7 @@ function App() {
   };
 
   const handleMedicationSubmit = async () => {
+   
     if (isManagementChanged === 'yes' && !Object.values(futureMedications).some((checked) => checked)) {
       setMedicationError('Please select at least one medication going forward.');
       return;
@@ -387,7 +388,7 @@ function App() {
             {/* Display "Is this prediction going to change your management?" */}
             <div style={{ marginTop: '20px' }}>
               <p><strong>Is this prediction going to change your management?</strong></p>
-              <label>
+              <label style={{ marginLeft: '8px' }}>
                 <input 
                   type="radio" 
                   name="isManagementChanged" 
@@ -396,7 +397,7 @@ function App() {
                 />
                 Yes  
               </label>
-              <label>
+              <label style={{ marginLeft: '8px' }}> 
                 <input 
                   type="radio" 
                   name="isManagementChanged" 
