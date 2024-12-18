@@ -47,7 +47,7 @@ body {
 
 .current-medications-label {
   font-weight: bold;
-  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .medication-label {
@@ -79,7 +79,8 @@ h2 {
 }
 
 .input-group {
-  margin-bottom: 10px; /* Reduce space between form fields */
+  margin-right: 10px;
+  margin-bottom: 10px;
 }
 
 .input-group label {

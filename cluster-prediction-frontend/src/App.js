@@ -29,19 +29,19 @@ function App() {
 
   const clusterExplanations = {
     SAID: (
-      <>The data provided and the presence of GAD-autoantibodies suggest <strong>Severe Auto-Immune Diabetes (SAID)</strong> and thus <strong> Type 1 Diabetes </strong>. These patients are prone to microvascular complications and are at an elevated risk of DKA. Early and aggressive insulin therapy should be considered, and the use of SGLT2 inhibitors is potentially unsafe.
+      <>The data provided and the presence of GAD-autoantibodies suggest <strong>Severe Auto-Immune Diabetes (SAID)</strong> and thus<strong> Type 1 Diabetes</strong>. These patients are prone to microvascular complications and are at an elevated risk of DKA. Early and aggressive insulin therapy should be considered, and the use of SGLT2 inhibitors is potentially unsafe.
       </>
     ),
     SIDD: (
-      <>The data provided including high HbA1c and relatively low C-peptide suggest <strong>Severe Insulin-Deficient Diabetes (SIDD)</strong> indicating loss of beta cell function. These patients are at high risk for micro- and macrovascular complications, and DKA. Aggressive glucose control is indicated. Insulin secretagogues including incretin-based therapies should be considered and early treatment with insulin might be needed and beneficial. SGLT2 inhibitors may also be considered in those with heart or kidney disease, but their use must be carefully weighed against the risk of DKA and closely monitored.
+      <>The data provided including high HbA1c and relatively low C-peptide suggest <strong>Severe Insulin-Deficient Diabetes (SIDD)</strong> indicating loss of beta cell function. These patients are at high risk for micro- and macrovascular complications and DKA. Aggressive glucose control is indicated. Insulin secretagogues including incretin-based therapies should be considered, and early treatment with insulin might be needed and beneficial. SGLT2 inhibitors may also be considered in those with heart or kidney disease, but their use must be carefully weighed against the risk of DKA and closely monitored.
       </>
     ),
     SIRD: (
-      <>The data provided including a relatively high C-peptide suggest <strong>Severe Insulin-Resistant Diabetes (SIRD)</strong>. These patients are at high risk for complications particularly nephropathy, MAFLD, and CVD. Aggressive glucose control is indicated. Early treatment with SGLT2 inhibitors or GLP1 RAs as well as adjuvant therapy with metformin should be considered. Insulin would typically be only required later in the disease process.
+      <>The data provided including a relatively high C-peptide suggest <strong>Severe Insulin-Resistant Diabetes (SIRD)</strong>. These patients are at high risk for complications, particularly nephropathy, MAFLD, and CVD. Aggressive glucose control is indicated. Early treatment with SGLT2 inhibitors or GLP1 RAs as well as adjuvant therapy with metformin should be considered. Insulin would typically be only required later in the disease process.
       </>
     ),
     MOD: (
-      <>The data provided indicating a relatively high body mass index suggest <strong>Mild Obesity-related Diabetes (MOD)</strong>. These patients as less prone to complications. Weight loss with diet and exercise are of most importance. Metformin, SGLT2 inhibitors and GLP1 RAs might be beneficial as first line pharmacological therapies.
+      <>The data provided indicating a relatively high body mass index suggest <strong>Mild Obesity-related Diabetes (MOD)</strong>. These patients as less prone to complications. Weight loss with diet and exercise are of most importance. Metformin, SGLT2 inhibitors, and GLP1 RAs might be beneficial as first line pharmacological therapies.
       </>
     ),
     MARD: (
@@ -66,12 +66,12 @@ function App() {
 
   // Define labels for medication keys
   const medicationLabels = {
-    insulin: 'Insulin',
-    glp1rAgonist: 'GLP-1 Receptor Agonist',
-    sglt2Inhibitor: 'SGLT2 Inhibitor',
-    metformin: 'Metformin',
-    other: 'Other',
-    none: 'None'
+    insulin: '  Insulin',
+    glp1rAgonist: '  GLP-1 Receptor Agonist',
+    sglt2Inhibitor: '  SGLT2 Inhibitor',
+    metformin: '  Metformin',
+    other: '  Other',
+    none: '  None'
   };
 
   const handleChange = (e) => {
@@ -87,15 +87,24 @@ function App() {
 
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
-    setCurrentMedications((prev) => ({ ...prev, [name]: checked }));
+  
+    // Update the state of current medications
+    setCurrentMedications((prev) => ({
+      ...prev,
+      [name]: checked,
+    }));
   };
-
+  
   const handleFutureMedicationChange = (e) => {
     const { name, checked } = e.target;
-    setFutureMedications((prev) => ({ ...prev, [name]: checked }));
-    setMedicationError(''); // Clear any previous error message
+  
+    // Update the state of future medications
+    setFutureMedications((prev) => ({
+      ...prev,
+      [name]: checked,
+    }));
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
@@ -108,6 +117,15 @@ function App() {
 
     if (!glucoseUnit || !cpeptideUnit) {
       setErrorMessage('Please select units for glucose and C-peptide.');
+      return;
+    }
+
+    // Check if "None" and other medications are selected simultaneously
+    if (
+      currentMedications.none &&
+      Object.entries(currentMedications).some(([key, checked]) => key !== 'none' && checked)
+    ) {
+      setErrorMessage('You cannot select "None" along with other medications.');
       return;
     }
 
@@ -167,7 +185,16 @@ function App() {
       return;
     }
   
-    setMedicationError('');
+    // Check if "None" is selected alongside other medications
+    if (
+      futureMedications.none &&
+      Object.entries(futureMedications).some(([key, checked]) => key !== 'none' && checked)
+    ) {
+      setMedicationError('You cannot select "None" along with other medications.');
+      return;
+    }
+
+    setMedicationError(''); // Clear any previous error messages
   
     try {
       // Ensure we have a prediction ID
@@ -220,7 +247,7 @@ function App() {
         
         <form onSubmit={handleSubmit} className="prediction-form">
           <div className="input-group">
-            <label>GAD Antibodies:</label>
+            <label>GAD antibodies:</label>
             <select 
               name="gad" 
               value={inputs.gad} 
@@ -235,7 +262,7 @@ function App() {
           </div>
 
           <div className="input-group">
-            <label>HbA1c (%):</label>
+            <label> HbA1c (%):</label>
             <input 
               type="number" 
               name="hba1c" 
@@ -259,7 +286,7 @@ function App() {
           </div>
 
           <div className="input-group">
-            <label>Age (Years):</label>
+            <label>Age (years):</label>
             <input 
               type="number" 
               name="age" 
@@ -291,8 +318,8 @@ function App() {
                 style={{ width: '45%' }}
               >
                 <option value="" disabled hidden>Select Unit</option>
-                <option value="nmol/L">nmol/L</option>
                 <option value="ng/mL">ng/mL</option> 
+                <option value="nmol/L">nmol/L</option>
               </select>
             </div>
           </div>
@@ -366,6 +393,7 @@ function App() {
                   name="isManagementChanged" 
                   value="yes" 
                   onChange={() => setIsManagementChanged('yes')} 
+                  style={{ marginRight: '10px' }} 
                 />
                 Yes
               </label>
@@ -375,6 +403,7 @@ function App() {
                   name="isManagementChanged" 
                   value="no" 
                   onChange={() => setIsManagementChanged('no')} 
+                  style={{ marginRight: '10px' }} 
                 />
                 No
               </label>
@@ -385,13 +414,14 @@ function App() {
                   <div>
                     <p> <strong>Medication going forward after this visit: </strong> </p> 
                     {Object.keys(futureMedications).map((medication) => (
-                      <div key={medication}>
+                      <div key={medication} style={{ textAlign: 'left' }}>
                         <label>
                           <input 
                             type="checkbox" 
                             name={medication} 
                             checked={futureMedications[medication]} 
-                            onChange={handleFutureMedicationChange} 
+                            onChange={handleFutureMedicationChange}
+                            style={{ marginRight: '10px' }} // Add spacing here 
                           />
                           {medicationLabels[medication]}
                         </label>
