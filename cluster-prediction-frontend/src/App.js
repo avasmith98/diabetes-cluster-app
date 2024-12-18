@@ -110,13 +110,8 @@ function App() {
     setErrorMessage('');
     setResult(null);
 
-    if (!inputs.gad || !inputs.hba1c || !inputs.bmi || !inputs.age || !inputs.cpeptide || !inputs.glucose) {
-      setErrorMessage('All fields must be filled with valid values.');
-      return;
-    }
-
-    if (!glucoseUnit || !cpeptideUnit) {
-      setErrorMessage('Please select units for glucose and C-peptide.');
+    if (!Object.values(currentMedications).some((checked) => checked)) {
+      setErrorMessage('Please select the patient\'s current medications.');
       return;
     }
 
@@ -129,8 +124,13 @@ function App() {
       return;
     }
 
-    if (!Object.values(currentMedications).some((checked) => checked)) {
-      setErrorMessage('Please select the patient\'s current medications.');
+    if (!inputs.gad || !inputs.hba1c || !inputs.bmi || !inputs.age || !inputs.cpeptide || !inputs.glucose) {
+      setErrorMessage('All fields must be filled with valid values.');
+      return;
+    }
+
+    if (!glucoseUnit || !cpeptideUnit) {
+      setErrorMessage('Please select units for glucose and C-peptide.');
       return;
     }
 
@@ -394,7 +394,7 @@ function App() {
                   value="yes" 
                   onChange={() => setIsManagementChanged('yes')} 
                 />
-                Yes
+                Yes  
               </label>
               <label>
                 <input 
@@ -418,8 +418,7 @@ function App() {
                             type="checkbox" 
                             name={medication} 
                             checked={futureMedications[medication]} 
-                            onChange={handleFutureMedicationChange}
-                            style={{ marginRight: '10px' }} // Add spacing here 
+                            onChange={handleFutureMedicationChange} 
                           />
                           {medicationLabels[medication]}
                         </label>
