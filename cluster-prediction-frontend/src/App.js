@@ -249,9 +249,11 @@ function App() {
             </div>
           ))}
         </div>
-
-        <p style={{ marginBottom: '20px' }}>Next, please enter all values as recorded at the time or closest to the patient’s <b> initial diabetes diagnosis </b>.</p>
         
+        <p style={{ marginBottom: '20px' }}>
+        Next, please enter all values as recorded at the time or closest to the patient’s <b>initial diabetes diagnosis</b>.
+        </p>
+
         <form onSubmit={handleSubmit} className="prediction-form">
           <div className="input-group">
             <label>GAD antibodies:</label>
