@@ -18,6 +18,7 @@ function App() {
   });
   const [glucoseUnit, setGlucoseUnit] = useState('');
   const [cpeptideUnit, setCpeptideUnit] = useState('');
+  const [isVerified, setIsVerified] = useState(false);
   const [currentMedications, setCurrentMedications] = useState({
     insulin: false,
     glp1rAgonist: false,
@@ -109,6 +110,12 @@ function App() {
     e.preventDefault();
     setErrorMessage('');
     setResult(null);
+
+    // Check if the verification checkbox is checked
+    if (!isVerified) {
+      setErrorMessage('Please verify that you are entering real patient information.');
+    return;
+  }
 
     if (!Object.values(currentMedications).some((checked) => checked)) {
       setErrorMessage('Please select the patient\'s current medication(s).');
@@ -220,7 +227,6 @@ function App() {
     }
   };
   
-
   return (
     <div className="app-container">
       <div className="form-container">
@@ -228,11 +234,23 @@ function App() {
         <p style={{ marginBottom: '20px' }}>
           <ul style={{ paddingLeft: '20px' }}>
             <li>This tool should not be used for monogenic forms of diabetes.</li>
-            <li>By the end of the form, you will have clicked two blue "Save to Database" buttons.</li>
+            <li>After predicting the cluster, please continue to scroll down and complete the rest of the form. By the end, you will have clicked two blue buttons.</li>
             <li>If you need to correct an entry, please contact:&nbsp; <a href="mailto:anmichl@uabmc.edu">anmichl@uabmc.edu</a>.</li>
             <li>The model has an average sensitivity of 93% and specificity of 98%.</li>
           </ul> 
         </p>
+        <div style={{ marginBottom: '20px' }}>
+          <label style={{ fontWeight: 'bold' }}>
+            <input 
+              type="checkbox" 
+              checked={isVerified} 
+              onChange={(e) => setIsVerified(e.target.checked)} 
+              required 
+              style={{ marginRight: '8px' }}
+            />
+            I verify that I am entering real patient information.
+        </label>
+      </div>
         <div>
           <label className="current-medications-label">Current Medication(s):</label>
           {Object.keys(currentMedications).map((medication) => (
@@ -368,6 +386,10 @@ function App() {
             <p>{errorMessage}</p>
           </div>
         )}
+        
+        <p style={{ marginBottom: '20px' }}>
+        After predicting the cluster, please continue to scroll all the way down and complete the remainder of the form.
+        </p>
 
         {result && (
           <div className="result-container">
