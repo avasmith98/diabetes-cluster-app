@@ -245,7 +245,7 @@ function App() {
             <input 
               type="checkbox" 
               checked={isVerified} 
-              onChange={(e) => setIsVerified(e.target.checked)} 
+              onChange={(e) => setIsVerified(e.target.checked ? true:false)} 
               required 
               style={{ marginRight: '8px' }}
             />
