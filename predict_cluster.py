@@ -31,6 +31,7 @@ class PredictionData(db.Model):
     medications = db.Column(db.JSON, nullable=False)  
     cluster_label = db.Column(db.String(50), nullable=False)
     probabilities = db.Column(db.JSON, nullable=False)
+    isVerified = db.Column(db.Boolean, default=False)
 
 class MedicationChange(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -58,6 +59,14 @@ def predict():
         age = float(data['age'])
         cpeptide = float(data['cpeptide'])
         glucose = float(data['glucose'])
+        isVerified = data.get('isVerified', False)
+
+        # Handle different types (string, int, bool) to ensure it's a boolean
+        if isinstance(isVerified, str):
+            isVerified = isVerified.lower() == 'true'
+        elif isinstance(isVerified, int):
+            isVerified = bool(isVerified)
+
 
         #Extract medications from the request
         medications = data.get('medications', {})
@@ -115,6 +124,7 @@ def predict():
         medications=medications,  
         cluster_label=cluster_label,
         probabilities=cluster_prob_rounded,
+        isVerified=isVerified
     )
     db.session.add(prediction_data)
     db.session.commit()
@@ -199,6 +209,7 @@ def get_data():
             'medications': record.medications,
             'cluster_label': record.cluster_label,
             'probabilities': record.probabilities,
+            'isVerified': record.isVerified
         }
         for record in predictions
     ]
