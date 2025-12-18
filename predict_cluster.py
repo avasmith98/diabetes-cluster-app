@@ -1,46 +1,13 @@
 from flask import Flask, request, jsonify, send_from_directory
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 from flask_cors import CORS 
 import os
 import joblib
 import pandas as pd
 
 
-
 # Create Flask app
 app = Flask(__name__, static_folder="build")
 CORS(app)  # Enable CORS for all routes
-
-# Set up PostgreSQL database URI
-# Configure the database
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL').replace("postgres://", "postgresql://", 1)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# Initialize the database
-db = SQLAlchemy(app)
-
-class PredictionData(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    gad = db.Column(db.Integer, nullable=False)
-    hba1c = db.Column(db.Float, nullable=False)
-    bmi = db.Column(db.Float, nullable=False)
-    age = db.Column(db.Integer, nullable=False)
-    cpeptide = db.Column(db.Float, nullable=False)
-    glucose = db.Column(db.Float, nullable=False)
-    medications = db.Column(db.JSON, nullable=False)  
-    cluster_label = db.Column(db.String(50), nullable=False)
-    probabilities = db.Column(db.JSON, nullable=False)
-    isVerified = db.Column(db.Boolean, default=False)
-
-class MedicationChange(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    prediction_data_id = db.Column(db.Integer, db.ForeignKey('prediction_data.id'), nullable = False)
-    is_management_changed = db.Column(db.Boolean, nullable=False)
-    medications = db.Column(db.JSON, nullable=False)
-
-#Initialize Flask-Migrate
-migrate = Migrate(app, db)
 
 # Load model
 MODEL_PATH = 'full_linear_rf_model.joblib'
@@ -59,17 +26,6 @@ def predict():
         age = float(data['age'])
         cpeptide = float(data['cpeptide'])
         glucose = float(data['glucose'])
-        isVerified = data.get('isVerified', False)
-
-        # Handle different types (string, int, bool) to ensure it's a boolean
-        if isinstance(isVerified, str):
-            isVerified = isVerified.lower() == 'true'
-        elif isinstance(isVerified, int):
-            isVerified = bool(isVerified)
-
-
-        #Extract medications from the request
-        medications = data.get('medications', {})
 
     except (KeyError, ValueError):
         return jsonify({'error': 'Invalid input data'}), 400
@@ -113,78 +69,13 @@ def predict():
     cluster_dict = {0: "SAID", 1: "SIDD", 2: "SIRD", 3: "MOD", 4: "MARD"}
     cluster_label = cluster_dict[cluster]
 
-    # Save prediction data to the database
-    prediction_data = PredictionData(
-        gad=gad,
-        hba1c=hba1c,
-        bmi=bmi,
-        age=age,
-        cpeptide=cpeptide,
-        glucose=glucose,
-        medications=medications,  
-        cluster_label=cluster_label,
-        probabilities=cluster_prob_rounded,
-        isVerified=isVerified
-    )
-    db.session.add(prediction_data)
-    db.session.commit()
-
     # Return output
     output = {
-        'predictionId': prediction_data.id,
         'cluster_label': cluster_label,
         'probabilities': cluster_prob_rounded
     }
     return jsonify(output)
     
-@app.route('/submit_medications', methods=['POST'])
-def submit_medications():
-    try:
-        # Parse JSON data from the request
-        data = request.get_json()
-
-        # Extract data from the request
-        prediction_id = data.get('predictionId')
-        is_management_changed = data.get('isManagementChanged')
-        medications = data.get('medications', {})
-
-        # Validate prediction_id
-        if not prediction_id:
-            return jsonify({'error': 'Missing prediction_id'}), 400
-
-        # Retrieve the associated prediction record
-        prediction_data = PredictionData.query.get(prediction_id)
-        if not prediction_data:
-            return jsonify({'error': 'PredictionData not found'}), 404
-
-        # Convert is_management_changed to boolean
-        if isinstance(is_management_changed, str):
-            is_management_changed = is_management_changed.lower() in ['yes', 'true', '1']
-        elif not isinstance(is_management_changed, bool):
-            return jsonify({'error': 'Invalid input data for "isManagementChanged".'}), 400
-
-        # Handle medications based on management change status
-        if not is_management_changed:
-            # If no management change, set medications to None or an empty object to indicate no changes
-            medications = None
-
-        # Save medication change to the database
-        medication_change = MedicationChange(
-            prediction_data_id=prediction_data.id,
-            is_management_changed=is_management_changed,
-            medications=medications
-        )
-
-        db.session.add(medication_change)
-        db.session.commit()
-
-        return jsonify({'message': 'Saved successfully.'}), 200
-
-    except Exception as e:
-        # Log and return error if any exception occurs
-        print(f"Error: {e}")
-        return jsonify({'error': f'An error occurred while submitting changes: {str(e)}'}), 500
-
 
 # Serve React static files
 @app.route("/", defaults={"path": ""})
@@ -194,29 +85,6 @@ def serve_react(path):
         return send_from_directory(app.static_folder, path)
     else:
         return send_from_directory(app.static_folder, "index.html")
-@app.route('/data', methods=['GET'])
-def get_data():
-    predictions = PredictionData.query.all()
-    results = [
-        {
-            'id': record.id,
-            'gad': record.gad,
-            'hba1c': record.hba1c,
-            'bmi': record.bmi,
-            'age': record.age,
-            'cpeptide': record.cpeptide,
-            'glucose': record.glucose,
-            'medications': record.medications,
-            'cluster_label': record.cluster_label,
-            'probabilities': record.probabilities,
-            'isVerified': record.isVerified
-        }
-        for record in predictions
-    ]
-    return jsonify(results)
-
-with app.app_context():
-    db.create_all()
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5001)))

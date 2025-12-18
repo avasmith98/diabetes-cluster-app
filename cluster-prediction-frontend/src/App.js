@@ -28,8 +28,8 @@ function CollapsibleReferences({ references }) {
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <ol
             style={{
-              textAlign: 'left',      // ✅ Each reference text is left-aligned
-              maxWidth: '600px',      // Optional: limit width for better readability
+              textAlign: 'left',      
+              maxWidth: '600px',      
               paddingLeft: '20px'
             }}
           >
@@ -57,7 +57,7 @@ const references = [
 
 const API_URL =
   process.env.NODE_ENV === 'development'
-    ? 'http://127.0.0.1:5000' // Local Flask server
+    ? 'http://127.0.0.1:5001' // Local Flask server
     : 'https://diabetes-cluster-b062f200dfdc.herokuapp.com/'; // Deployed Flask server
 
 function App() {
@@ -71,15 +71,6 @@ function App() {
   });
   const [glucoseUnit, setGlucoseUnit] = useState('');
   const [cpeptideUnit, setCpeptideUnit] = useState('');
-  const [isVerified, setIsVerified] = useState(false);
-  const [currentMedications, setCurrentMedications] = useState({
-    insulin: false,
-    glp1rAgonist: false,
-    sglt2Inhibitor: false,
-    metformin: false,
-    other: false,
-    none: false,
-  });
 
   const clusterExplanations = {
     SAID: (
@@ -111,27 +102,7 @@ function App() {
   
   const [result, setResult] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
-  const [isManagementChanged, setIsManagementChanged] = useState('');
-  const [futureMedications, setFutureMedications] = useState({
-    insulin: false,
-    glp1rAgonist: false,
-    sglt2Inhibitor: false,
-    metformin: false,
-    other: false,
-    none: false,
-  });
   const [submissionStatus, setSubmissionStatus] = useState('');
-  const [medicationError, setMedicationError] = useState('');
-
-  // Define labels for medication keys
-  const medicationLabels = {
-    insulin: '  Insulin',
-    glp1rAgonist: '  GLP-1 Receptor Agonist',
-    sglt2Inhibitor: '  SGLT2 Inhibitor',
-    metformin: '  Metformin',
-    other: '  Other',
-    none: '  None'
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -146,48 +117,12 @@ function App() {
 
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
-  
-    // Update the state of current medications
-    setCurrentMedications((prev) => ({
-      ...prev,
-      [name]: checked,
-    }));
-  };
-  
-  const handleFutureMedicationChange = (e) => {
-    const { name, checked } = e.target;
-  
-    // Update the state of future medications
-    setFutureMedications((prev) => ({
-      ...prev,
-      [name]: checked,
-    }));
   };
   
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
     setResult(null);
-
-    // Check if the verification checkbox is checked
-    if (!isVerified) {
-      setErrorMessage('Please verify that you are entering real patient information.');
-    return;
-  }
-
-    if (!Object.values(currentMedications).some((checked) => checked)) {
-      setErrorMessage('Please select the patient\'s current medication(s).');
-      return;
-    }
-
-    // Check if "None" and other medications are selected simultaneously
-    if (
-      currentMedications.none &&
-      Object.entries(currentMedications).some(([key, checked]) => key !== 'none' && checked)
-    ) {
-      setErrorMessage('You cannot select "None" along with other medications.');
-      return;
-    }
 
     if (!inputs.gad || !inputs.hba1c || !inputs.bmi || !inputs.age || !inputs.cpeptide || !inputs.glucose) {
       setErrorMessage('All fields must be filled with valid values.');
@@ -217,9 +152,7 @@ function App() {
         bmi: parseFloat(inputs.bmi),
         age: parseFloat(inputs.age),
         cpeptide: cpeptideValue,
-        glucose: glucoseValue,
-        medications: currentMedications, 
-        isVerified: isVerified
+        glucose: glucoseValue, 
       };
 
       // Send the request to the prediction endpoint  
@@ -229,8 +162,7 @@ function App() {
       if (response.data) {
         // Store the entire result
         setResult(response.data);
-        // Store the prediction ID explicitly using the updated key name
-        setResult((prev) => ({ ...prev, predictionId: response.data.predictionId }));
+
       }
 
     } catch (error) {
@@ -245,47 +177,6 @@ function App() {
     }
   };
 
-  const handleMedicationSubmit = async () => {
-   
-    if (isManagementChanged === 'yes' && !Object.values(futureMedications).some((checked) => checked)) {
-      setMedicationError('Please select at least one medication going forward.');
-      return;
-    }
-  
-    // Check if "None" is selected alongside other medications
-    if (
-      futureMedications.none &&
-      Object.entries(futureMedications).some(([key, checked]) => key !== 'none' && checked)
-    ) {
-      setMedicationError('You cannot select "None" along with other medications.');
-      return;
-    }
-
-    setMedicationError(''); // Clear any previous error messages
-  
-    try {
-      // Ensure we have a prediction ID
-      if (!result || !result.predictionId) {
-        setSubmissionStatus('Failed to submit. Prediction ID is missing.');
-        return;
-      }
-  
-      // Submit medications regardless of management change
-      let medicationsToSubmit = isManagementChanged === 'yes' ? futureMedications : null;
-  
-      const response = await axios.post(`${API_URL}/submit_medications`, {
-        predictionId: result.predictionId,
-        isManagementChanged: isManagementChanged,
-        medications: medicationsToSubmit,
-      });
-  
-      setSubmissionStatus('Saved successfully.');
-    } catch (error) {
-      console.error('Error:', error);
-      setSubmissionStatus('Failed to submit. Please try again.');
-    }
-  };
-  
   return (
     <div className="app-container">
       <div className="form-container">
@@ -293,39 +184,9 @@ function App() {
         <p style={{ marginBottom: '20px' }}>
           <ul style={{ paddingLeft: '20px' }}>
             <li>This tool should not be used for monogenic forms of diabetes.</li>
-            <li>After predicting the cluster, please continue to scroll down and complete the rest of the form. By the end, you will have clicked two blue buttons.</li>
-            <li>If you need to correct an entry, please contact:&nbsp; <a href="mailto:anmichl@uabmc.edu">anmichl@uabmc.edu</a>.</li>
             <li>The model has an average sensitivity of 93% and specificity of 98%.</li>
           </ul> 
         </p>
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ fontWeight: 'bold' }}>
-            <input 
-              type="checkbox" 
-              checked={isVerified} 
-              onChange={(e) => setIsVerified(e.target.checked ? true:false)} 
-              required 
-              style={{ marginRight: '8px' }}
-            />
-            I verify that I am entering real patient information.
-        </label>
-      </div>
-        <div>
-          <label className="current-medications-label">Current Medication(s):</label>
-          {Object.keys(currentMedications).map((medication) => (
-            <div key={medication} className={medication === 'none' ? 'last-medication-option' : ''}>
-              <label className="medication-label">
-                <input 
-                  type="checkbox" 
-                  name={medication} 
-                  checked={currentMedications[medication]} 
-                  onChange={handleCheckboxChange} 
-                />
-                {medicationLabels[medication]}
-              </label>
-            </div>
-          ))}
-        </div>
         
         <p style={{ marginBottom: '20px' }}>
         Next, please enter all values as recorded at the time or closest to the patient’s <b>initial diabetes diagnosis</b>.
@@ -437,7 +298,7 @@ function App() {
             </div>
           </div>
 
-          <button type="submit" className="submit-button">Predict and save to database</button>
+          <button type="submit" className="submit-button">Predict</button>
         </form>
 
         {errorMessage && (
@@ -446,10 +307,6 @@ function App() {
           </div>
         )}
         
-        <p style={{ marginBottom: '20px' }}>
-        After predicting the cluster, please continue to scroll all the way down and complete the remainder of the form. 
-        </p>
-
         {result && (
           <div className="result-container">
             {/* Display the resulting cluster */}
@@ -471,82 +328,13 @@ function App() {
               <div>SIDD: {(result.probabilities[1] * 100).toFixed(2)}%</div>
               <div>SIRD: {(result.probabilities[2] * 100).toFixed(2)}%</div>
               <div>MOD: {(result.probabilities[3] * 100).toFixed(2)}%</div>
-              <div>MARD: {(result.probabilities[4] * 100).toFixed(2)}%</div>
-            </div>
-
-            {/* Display "Is this prediction going to change your management?" */}
-            <div style={{ marginTop: '20px', textAlign: 'left' }}>
-              <p><strong> Is this prediction going to change your management?</strong></p>
-              <label>
-                <input 
-                  type="radio" 
-                  name="isManagementChanged" 
-                  value="yes" 
-                  onChange={() => setIsManagementChanged('yes')} 
-                  style={{ marginRight: '2px' }} 
-                />
-                Yes  
-              </label>
-              <label style={{ marginLeft: '8px' }}> 
-                <input 
-                  type="radio" 
-                  name="isManagementChanged" 
-                  value="no" 
-                  onChange={() => setIsManagementChanged('no')}
-                  style={{ marginRight: '2px' }} // Add spacing  
-                />
-                No
-              </label>
-            </div>
-            {(isManagementChanged === 'yes' || isManagementChanged === 'no') && (
-              <div style={{ marginTop: '20px', textAlign: 'left'}}>
-                {isManagementChanged === 'yes' && (
-                  <div>
-                    <p style={{ marginRight: '10px' }}> 
-                    <strong>Medication(s) going forward after this visit: </strong> 
-                    </p>  
-                    {Object.keys(futureMedications).map((medication) => (
-                      <div key={medication} style={{ textAlign: 'left' }}>
-                        <label>
-                          <input 
-                            type="checkbox" 
-                            name={medication} 
-                            checked={futureMedications[medication]} 
-                            onChange={handleFutureMedicationChange} 
-                          />
-                          {medicationLabels[medication]}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                
-                {medicationError && (
-                  <div className="error-message">
-                    <p>{medicationError}</p>
-                  </div>
-                )}
-
-                <button 
-                  type="button" 
-                  className="submit-button" 
-                  onClick={handleMedicationSubmit}
-                  disabled={isManagementChanged === 'yes' && !Object.values(futureMedications).some(checked => checked)}
-                >
-                  Save to database
-                </button>
-                
-                {submissionStatus && (
-                  <div className="submission-status">
-                    <p>{submissionStatus}</p>
-                  </div>
-                )}
-              </div>
-            )}
+              <div>MARD: {(result.probabilities[4] * 100).toFixed(2)}%</div> 
           </div>
-        )}
       </div>
+    )}
+    
     </div>
+  </div> 
   );
 }
 
