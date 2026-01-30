@@ -45,15 +45,128 @@ function CollapsibleReferences({ references }) {
   );
 }
 
-const references = [
-  "Data-driven Cluster Analysis Reveals Increased Risk for Severe Insulin-deficient Diabetes in Black/African Americans. The Journal of Clinical Endocrinology & Metabolism, 2024, 00, 1–9.",
-  "Diabetes Management Based on the Phenotype and Stage of the Disease: An Expert Proposal from the AGORA Diabetes Collaborative Group. J. Clin. Med. 2024, 13, 4839.",
-  "A novel diabetes typology: towards precision diabetology from pathogenesis to treatment. Diabetologia (2022) 65:1770–1781.",
-  "Not All Patients with Type 2 Diabetes Are Equal. The American Journal of Medicine, 2021; 134 (6): 707-709.",
-  "Trajectories of clinical characteristics, complications and treatment choices in data-driven subgroups of type 2 diabetes. Diabetologia (2024) 67:1343–1355.",
-  "Precision subclassification of type 2 diabetes: a systematic review. Communications Medicine, 2023; 3:138.",
-  "Pharmacologic Approaches to Glycemic Treatment: Standards of Care in Diabetes—2024. Diabetes Care 2024;47(Suppl. 1):S158–S178."
+
+
+const reference_1 = (
+  <>Toledano, Y.; Knobler, H. Not All Patients with Type 2 Diabetes Are Equal. <em>Am J Med</em> <strong>2021</strong>, 134, 707-709, <a href ="https://doi.org/10.1016/j.amjmed.2021.02.005">doi:10.1016/j.amjmed.2021.02.005</a></>
+);
+
+const reference_2 = (
+  <>Herder, C.; Roden, M. A novel diabetes typology: towards precision diabetology from pathogenesis to treatment. <em>Diabetologia</em> <strong>2022</strong>, 65, 1770-1781, <a href ='https://doi.org/10.1007/s00125-021-05625-x'>doi:10.1007/s00125-021-05625-x</a></>
+);
+
+const reference_3 = (
+  <>Asplund, O.; Thangam, M.; Prasad, R.B.; Lejonberg, C.; Ekstrom, O.; Hakaste, L.; Smith, J.G.; Rosengren, A.H.; Oscarsson, J.; Carlsson, B.; et al. \
+  Comorbidities and mortality in subgroups of adults with diabetes with up to 14 years follow-up: a prospective cohort study in Sweden. <em>Lancet Diabetes Endocrinol</em> <strong>2026</strong>, 14, 29-40, <a href ="https://doi.org/10.1016/S2213-8587(25)00283-9">doi:10.1016/S2213-8587(25)00283-9</a></>
+);
+
+const reference_4 = (
+  <>Somolinos-Simon, F.J.; Garcia-Saez, G.; Tapia-Galisteo, J.; Corcoy, R.; Elena Hernando, M. Cluster analysis of adult individuals with type 1 diabetes: Treatment pathways and complications over a five-year follow-up period.\
+  <em>Diabetes Res Clin Pract</em> <strong>2024</strong>, 215, 111803, <a href ="https://doi.org/10.1016/j.diabres.2024.111803">doi:10.1016/j.diabres.2024.111803</a></>
+);
+
+const reference_5 = (
+  <>Kahkoska, A.R.; Nguyen, C.T.; Jiang, X.; Adair, L.A.; Agarwal, S.; Aiello, A.E.; Burger, K.S.; Buse, J.B.; Dabelea, D.; Dolan, L.M.; et al. \
+  Characterizing the weight-glycemia phenotypes of type 1 diabetes in youth and young adulthood. <em>BMJ Open Diabetes Res Care</em> <strong>2020</strong>, 8, <a href ="https://doi.org/10.1136/bmjdrc-2019-000886">doi:10.1136/bmjdrc-2019-000886</a></>
+);
+
+const reference_6 = (
+  <>Battaglia, M.; Ahmed, S.; Anderson, M.S.; Atkinson, M.A.; Becker, D.; Bingley, P.J.; Bosi, E.; Brusko, T.M.; DiMeglio, L.A.; Evans-Molina, C.; et al. \
+  Introducing the Endotype Concept to Address the Challenge of Disease Heterogeneity in Type 1 Diabetes. <em>Diabetes Care</em> <strong>2020</strong>, 43, 5-12, <a href ="https://doi.org/10.2337/dc19-0880">doi:10.2337/dc19-0880</a></>
+);
+
+const reference_7 = (
+  <>American Diabetes Association Professional Practice Committee for, D. 9. \
+  Pharmacologic Approaches to Glycemic Treatment: Standards of Care in Diabetes-2026. <em>Diabetes Care</em> <strong>2026</strong>, 49, S183-S215, <a href ="https://doi.org/10.2337/dc26-S009">doi:10.2337/dc26-S009</a></>
+);
+
+const reference_8 = (
+  <>American Diabetes Association Professional Practice Committee for, D. 3. \
+  Prevention or Delay of Diabetes and Associated Comorbidities: Standards of Care in Diabetes-2026. <em>Diabetes Care</em> <strong>2026</strong>, 49, S50-S60, <a href ="https://doi.org/10.2337/dc26-S003">doi:10.2337/dc26-S003</a></>
+);
+
+const reference_9 = (
+  <>Buzzetti, R.; Tuomi, T.; Mauricio, D.; Pietropaolo, M.; Zhou, Z.; Pozzilli, P.; Leslie, R.D. Management of Latent Autoimmune Diabetes in Adults: \
+  A Consensus Statement From an International Expert Panel. <em>Diabetes</em> <strong>2020</strong>, 69, 2037-2047, <a href ="https://doi.org/10.2337/dbi20-0017">doi:10.2337/dbi20-0017</a></>
+);
+
+const reference_10 = (
+  <>Misra, S.; Wagner, R.; Ozkan, B.; Schon, M.; Sevilla-Gonzalez, M.; Prystupa, K.; Wang, C.C.; Kreienkamp, R.J.; Cromer, S.J.; Rooney, M.R.; et al.\
+  Precision subclassification of type 2 diabetes: a systematic review. <em>Commun Med (Lond)</em> <strong>2023</strong>, 3, 138, <a href ="https://doi.org/10.1038/s43856-023-00360-3">doi:10.1038/s43856-023-00360-3</a></>
+);
+
+const reference_11 = (
+  <>Li, X.; Donnelly, L.A.; Slieker, R.C.; Beulens, J.W.J.; t Hart, L.M.; Elders, P.J.M.; Pearson, E.R.; van Giessen, A.; Leal, J.; Feenstra, T. \
+  Trajectories of clinical characteristics, complications and treatment choices in data-driven subgroups of type 2 diabetes. <em>Diabetologia</em> <strong>2024</strong>, 67, 1343-1355, <a href ="https://doi.org/10.1007/s00125-024-06147-y">doi:10.1007/s00125-024-06147-y</a></>
+);
+
+const reference_12 = (
+  <>Lu, B.; Li, P.; Crouse, A.B.; Grimes, T.; Might, M.; Ovalle, F.; Shalev, A. \
+  Data-driven Cluster Analysis Reveals Increased Risk for Severe Insulin-deficient Diabetes in Black/African Americans. <em>J Clin Endocrinol Metab</em> <strong>2025</strong>, 110, 387-395, <a href ="https://doi.org/10.1210/clinem/dgae516">doi:10.1210/clinem/dgae516</a></>
+);
+
+const reference_13 = (
+  <>Gomez-Peralta, F.; Pines-Corrales, P.J.; Santos, E.; Cuesta, M.; Gonzalez-Albarran, O.; Azriel, S.; On Behalf The Agora Diabetes Collaborative, G. Diabetes Management Based on the Phenotype and Stage of the Disease: \
+  An Expert Proposal from the AGORA Diabetes Collaborative Group. <em>J Clin Med</em> <strong>2024</strong>, 13, <a href ="https://doi.org/10.3390/jcm13164839">doi:10.3390/jcm13164839</a></>
+);
+
+const reference_14 = (
+  <>Xing, L.; Peng, F.; Liang, Q.; Dai, X.; Ren, J.; Wu, H.; Yang, S.; Zhu, Y.; Jia, L.; Zhao, S. Clinical Characteristics and Risk of Diabetic Complications in Data-Driven Clusters Among Type 2 Diabetes. \
+  <em>Front Endocrinol (Lausanne)</em> <strong>2021</strong>, 12, 617628, <a href ="https://doi.org/10.3389/fendo.2021.617628">doi:10.3389/fendo.2021.617628</a></>
+);
+
+const reference_15 = (
+  <>American Diabetes Association Professional Practice Committee for, D. 13. Older Adults: Standards of Care in Diabetes-2026. <em>Diabetes Care</em> <strong>2026</strong>, 49, S277-S296, <a href ="https://doi.org/10.2337/dc26-S013">doi:10.2337/dc26-S013</a></>
+);
+
+const reference_SAID = [
+  reference_1, 
+  reference_2, 
+  reference_3, 
+  reference_7,
+  reference_4, 
+  reference_5, 
+  reference_6,
+  reference_9, 
+  reference_8    
 ];
+
+const reference_SIDD = [
+  reference_2,
+  reference_3,
+  reference_10,
+  reference_11,
+  reference_12,
+  reference_1,
+  reference_13,
+  reference_7,
+];
+  
+
+const reference_SIRD = [
+  reference_1,
+  reference_2,
+  reference_3,
+  reference_10,
+  reference_11,
+  reference_13,
+  reference_7
+];
+
+const reference_MOD = [
+  reference_12,
+  reference_14,
+  reference_2,
+  reference_13
+];  
+
+const reference_MARD = [ 
+ reference_12,
+ reference_14,
+ reference_2,
+ reference_13,
+ reference_15
+]; 
 
 const API_URL =
   process.env.NODE_ENV === 'development'
@@ -74,28 +187,51 @@ function App() {
 
   const clusterExplanations = {
     SAID: (
-      <>The data provided and the presence of GAD-autoantibodies suggest <strong>Severe Auto-Immune Diabetes (SAID)</strong> and thus<strong> Type 1 Diabetes</strong>. These patients are prone to microvascular complications and are at an elevated risk of DKA. Early and aggressive insulin therapy should be considered, and the use of SGLT2 inhibitors is potentially unsafe.
-      <CollapsibleReferences references={references} />
+      <>The provided input most closely aligns with the <strong> Severe Autoimmune Diabetes (SAID) cluster. </strong>
+       SAID is defined by the presence of positive glutamic acid decarboxylase autoantibodies (GADA) at the time of diagnosis, so cases meeting this criterion are always classified as such. 
+       SAID is consistent with type 1 diabetes (T1D), characterized by the autoimmune destruction of insulin-producing beta cells and eventual reliance on insulin replacement therapy. 
+       The SAID cluster is associated with an elevated risk of diabetic ketoacidosis, often at diagnosis (DKA), and development of microvascular complications [1-3].
+
+       For most individuals with T1D, early and aggressive insulin replacement is recommended, and the use of SGLT2 inhibitors is potentially unsafe [1,4]. 
+       For individuals with latent autoimmune diabetes in adults (LADA), a subset of T1D [5-7], approved guidelines for T1D or modified guidelines for type 2 diabetes (T2D) may be considered depending on the individual’s remaining beta cell function [8]. 
+       Teplizumab may be considered to delay the onset of symptomatic T1D [9]. 
+      <CollapsibleReferences references={reference_SAID} />
       </>
     ),
     SIDD: (
-      <>The data provided including high HbA1c and relatively low C-peptide suggest <strong>Severe Insulin-Deficient Diabetes (SIDD)</strong> indicating loss of beta cell function. These patients are at high risk for micro- and macrovascular complications and DKA. Aggressive glucose control is indicated. Insulin secretagogues including incretin-based therapies should be considered, and early treatment with insulin might be needed and beneficial. SGLT2 inhibitors may also be considered in those with heart or kidney disease, but their use must be carefully weighed against the risk of DKA and closely monitored.
-      <CollapsibleReferences references={references} />
+      <>The provided input most closely aligns with <strong> Severe Insulin-Deficient Diabetes (SIDD) </strong>, a subset of type 2 diabetes (T2D). 
+      The SIDD cluster is characterized by high HbA1c, insulin deficiency as indicated by low C-peptide, and absence of glutamic acid decarboxylase autoantibodies (GADA). 
+      This cluster has been associated with the highest risk of micro- and macrovascular complications [1,2,3-5]. 
+      Aggressive glucose control is recommended [6]. 
+      Insulin secretagogues, including incretin-based therapies, could be considered [6,7], and early treatment with insulin might be needed and beneficial [3,6,7,8]. 
+      SGLT2 inhibitors may also be considered in those with heart or kidney disease, but their use should be carefully weighed against the risk of DKA and closely monitored [8].
+      <CollapsibleReferences references={reference_SIDD} />
       </>
     ),
     SIRD: (
-      <>The data provided including a relatively high C-peptide suggest <strong>Severe Insulin-Resistant Diabetes (SIRD)</strong>. These patients are at high risk for complications, particularly nephropathy, MAFLD, and CVD. Aggressive glucose control is indicated. Early treatment with SGLT2 inhibitors or GLP1 RAs as well as adjuvant therapy with metformin should be considered. Insulin would typically be only required later in the disease process.
-      <CollapsibleReferences references={references} />
+      <>The provided input most closely aligns with <strong>Severe Insulin-Resistant Diabetes (SIRD)</strong>, a subset of type 2 diabetes (T2D). 
+      The SIRD cluster is characterized by high insulin resistance as indicated by high C-peptide and glucose, and the absence of glutamic acid decarboxylase autoantibodies (GABA). 
+      Individuals in this cluster may be at higher risk for complications including nephropathy, metabolic dysfunction-associated steatotic liver disease (MASLD), and cardiovascular disease (CVD) [1-3,4,5]. 
+      Aggressive glucose control is recommended [1].
+      Early treatment with SGLT2 inhibitors or GLP1 RAs as well as adjuvant therapy with metformin could be considered [1,2,6]. 
+      Insulin may be considered later in the disease process to help achieve glycemic goal of HbA1c under 8% [6].
+      Pioglitazone could be considered in those with evidence of metabolic dysfunction-associated steatohepatitis (MASH) [1,6,7].
+      <CollapsibleReferences references={reference_SIRD} />
       </>
     ),
     MOD: (
-      <>The data provided indicating a relatively high body mass index suggest <strong>Mild Obesity-related Diabetes (MOD)</strong>. These patients as less prone to complications. Weight loss with diet and exercise are of most importance. Metformin, SGLT2 inhibitors, and GLP1 RAs might be beneficial as first line pharmacological therapies.
-      <CollapsibleReferences references={references} />
+      <>The provided input most closely aligns with <strong>Mild Obesity-Related Diabetes (MOD)</strong>, a subset of type 2 diabetes (T2D). 
+      The MOD cluster is characterized by higher BMI, the absence of glutamic acid decarboxylase autoantibodies (GABA), and a lower complication risk [1,2]. 
+      Weight loss with diet and exercise could be considered [3,4].
+      Metformin, SGLT2 inhibitors, and GLP1 RAs might be beneficial as first line pharmacological therapies [3,4].
+      <CollapsibleReferences references={reference_MOD} />
       </>
     ),
     MARD: (
-      <>The data provided including a higher age at diagnosis suggest <strong>Mild Age-Related Diabetes (MARD)</strong>. The risk for complications is relatively lower. A more conservative therapeutic approach with safer drugs might be appropriate.
-      <CollapsibleReferences references={references} />
+      <>The provided input most closely aligns with <strong>Mild Age-Related Diabetes (MARD)</strong>, a subset of type 2 diabetes (T2D). 
+      The MARD cluster is characterized by higher age at diagnosis, the absence of glutamic acid decarboxylase autoantibodies (GABA), and a lower complication risk [1,2].
+      A more conservative therapeutic approach with lifestyle modifications and medications with low risk of hypoglycemia might be appropriate [3,4,5].
+      <CollapsibleReferences references={reference_MARD} />
       </>
     ) 
   };
