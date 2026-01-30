@@ -464,10 +464,26 @@ function App() {
               <div>SIDD: {(result.probabilities[1] * 100).toFixed(2)}%</div>
               <div>SIRD: {(result.probabilities[2] * 100).toFixed(2)}%</div>
               <div>MOD: {(result.probabilities[3] * 100).toFixed(2)}%</div>
-              <div>MARD: {(result.probabilities[4] * 100).toFixed(2)}%</div> 
+              <div>MARD: {(result.probabilities[4] * 100).toFixed(2)}%</div>
+            </div>
+
+            {/* Display SHAP explanation plot */}
+            {result.shap_plot && (
+              <div style={{ marginTop: '30px' }}>
+                <h4>Feature Importance (SHAP Analysis):</h4>
+                <p style={{ fontSize: '0.9em', color: '#666', marginBottom: '10px' }}>
+                  This chart shows how each input feature contributed to this specific prediction.
+                  Features pushing the prediction higher are shown in red, while features pushing it lower are shown in blue.
+                </p>
+                <img
+                  src={`data:image/png;base64,${result.shap_plot}`}
+                  alt="SHAP Feature Importance"
+                  style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
+                />
+              </div>
+            )}
           </div>
-      </div>
-    )}
+        )}
     
     </div>
   </div> 

@@ -1,8 +1,14 @@
 from flask import Flask, request, jsonify, send_from_directory
-from flask_cors import CORS 
+from flask_cors import CORS
 import os
 import joblib
 import pandas as pd
+import shap
+import matplotlib
+matplotlib.use('Agg')  # Use non-interactive backend
+import matplotlib.pyplot as plt
+import base64
+from io import BytesIO
 
 
 # Create Flask app
@@ -14,6 +20,12 @@ MODEL_PATH = 'full_linear_rf_model.joblib'
 if not os.path.isfile(MODEL_PATH):
     raise FileNotFoundError(f"Model file {MODEL_PATH} does not exist.")
 model = joblib.load(MODEL_PATH)
+
+# Load SHAP explainer
+SHAP_PATH = 'shap_explainer.joblib'
+if not os.path.isfile(SHAP_PATH):
+    raise FileNotFoundError(f"SHAP explainer file {SHAP_PATH} does not exist.")
+explainer = joblib.load(SHAP_PATH)
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -69,10 +81,30 @@ def predict():
     cluster_dict = {0: "SAID", 1: "SIDD", 2: "SIRD", 3: "MOD", 4: "MARD"}
     cluster_label = cluster_dict[cluster]
 
+    # Generate SHAP values for this prediction
+    shap_values = explainer(x)
+
+    # Create SHAP waterfall plot for the predicted cluster
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    # Create waterfall plot for the predicted class
+    shap.plots.waterfall(shap_values[0, :, cluster], max_display=6, show=False)
+
+    plt.title(f"Feature Contributions for {cluster_label} Prediction", fontsize=14)
+    plt.tight_layout()
+
+    # Save plot to base64 string
+    buf = BytesIO()
+    plt.savefig(buf, format='png', dpi=150, bbox_inches='tight', facecolor='white')
+    buf.seek(0)
+    shap_plot_base64 = base64.b64encode(buf.read()).decode('utf-8')
+    plt.close(fig)
+
     # Return output
     output = {
         'cluster_label': cluster_label,
-        'probabilities': cluster_prob_rounded
+        'probabilities': cluster_prob_rounded,
+        'shap_plot': shap_plot_base64
     }
     return jsonify(output)
     
