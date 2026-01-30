@@ -66,53 +66,53 @@ const reference_4 = (
 );
 
 const reference_5 = (
-  <>Kahkoska, A.R.; Nguyen, C.T.; Jiang, X.; Adair, L.A.; Agarwal, S.; Aiello, A.E.; Burger, K.S.; Buse, J.B.; Dabelea, D.; Dolan, L.M.; et al. \
+  <>Kahkoska, A.R.; Nguyen, C.T.; Jiang, X.; Adair, L.A.; Agarwal, S.; Aiello, A.E.; Burger, K.S.; Buse, J.B.; Dabelea, D.; Dolan, L.M.; et al. 
   Characterizing the weight-glycemia phenotypes of type 1 diabetes in youth and young adulthood. <em>BMJ Open Diabetes Res Care</em> <strong>2020</strong>, 8, <a href ="https://doi.org/10.1136/bmjdrc-2019-000886">doi:10.1136/bmjdrc-2019-000886</a></>
 );
 
 const reference_6 = (
-  <>Battaglia, M.; Ahmed, S.; Anderson, M.S.; Atkinson, M.A.; Becker, D.; Bingley, P.J.; Bosi, E.; Brusko, T.M.; DiMeglio, L.A.; Evans-Molina, C.; et al. \
+  <>Battaglia, M.; Ahmed, S.; Anderson, M.S.; Atkinson, M.A.; Becker, D.; Bingley, P.J.; Bosi, E.; Brusko, T.M.; DiMeglio, L.A.; Evans-Molina, C.; et al. 
   Introducing the Endotype Concept to Address the Challenge of Disease Heterogeneity in Type 1 Diabetes. <em>Diabetes Care</em> <strong>2020</strong>, 43, 5-12, <a href ="https://doi.org/10.2337/dc19-0880">doi:10.2337/dc19-0880</a></>
 );
 
 const reference_7 = (
-  <>American Diabetes Association Professional Practice Committee for, D. 9. \
+  <>American Diabetes Association Professional Practice Committee for, D. 9. 
   Pharmacologic Approaches to Glycemic Treatment: Standards of Care in Diabetes-2026. <em>Diabetes Care</em> <strong>2026</strong>, 49, S183-S215, <a href ="https://doi.org/10.2337/dc26-S009">doi:10.2337/dc26-S009</a></>
 );
 
 const reference_8 = (
-  <>American Diabetes Association Professional Practice Committee for, D. 3. \
+  <>American Diabetes Association Professional Practice Committee for, D. 3. 
   Prevention or Delay of Diabetes and Associated Comorbidities: Standards of Care in Diabetes-2026. <em>Diabetes Care</em> <strong>2026</strong>, 49, S50-S60, <a href ="https://doi.org/10.2337/dc26-S003">doi:10.2337/dc26-S003</a></>
 );
 
 const reference_9 = (
-  <>Buzzetti, R.; Tuomi, T.; Mauricio, D.; Pietropaolo, M.; Zhou, Z.; Pozzilli, P.; Leslie, R.D. Management of Latent Autoimmune Diabetes in Adults: \
+  <>Buzzetti, R.; Tuomi, T.; Mauricio, D.; Pietropaolo, M.; Zhou, Z.; Pozzilli, P.; Leslie, R.D. Management of Latent Autoimmune Diabetes in Adults: 
   A Consensus Statement From an International Expert Panel. <em>Diabetes</em> <strong>2020</strong>, 69, 2037-2047, <a href ="https://doi.org/10.2337/dbi20-0017">doi:10.2337/dbi20-0017</a></>
 );
 
 const reference_10 = (
-  <>Misra, S.; Wagner, R.; Ozkan, B.; Schon, M.; Sevilla-Gonzalez, M.; Prystupa, K.; Wang, C.C.; Kreienkamp, R.J.; Cromer, S.J.; Rooney, M.R.; et al.\
+  <>Misra, S.; Wagner, R.; Ozkan, B.; Schon, M.; Sevilla-Gonzalez, M.; Prystupa, K.; Wang, C.C.; Kreienkamp, R.J.; Cromer, S.J.; Rooney, M.R.; et al.
   Precision subclassification of type 2 diabetes: a systematic review. <em>Commun Med (Lond)</em> <strong>2023</strong>, 3, 138, <a href ="https://doi.org/10.1038/s43856-023-00360-3">doi:10.1038/s43856-023-00360-3</a></>
 );
 
 const reference_11 = (
-  <>Li, X.; Donnelly, L.A.; Slieker, R.C.; Beulens, J.W.J.; t Hart, L.M.; Elders, P.J.M.; Pearson, E.R.; van Giessen, A.; Leal, J.; Feenstra, T. \
+  <>Li, X.; Donnelly, L.A.; Slieker, R.C.; Beulens, J.W.J.; t Hart, L.M.; Elders, P.J.M.; Pearson, E.R.; van Giessen, A.; Leal, J.; Feenstra, T. 
   Trajectories of clinical characteristics, complications and treatment choices in data-driven subgroups of type 2 diabetes. <em>Diabetologia</em> <strong>2024</strong>, 67, 1343-1355, <a href ="https://doi.org/10.1007/s00125-024-06147-y">doi:10.1007/s00125-024-06147-y</a></>
 );
 
 const reference_12 = (
-  <>Lu, B.; Li, P.; Crouse, A.B.; Grimes, T.; Might, M.; Ovalle, F.; Shalev, A. \
+  <>Lu, B.; Li, P.; Crouse, A.B.; Grimes, T.; Might, M.; Ovalle, F.; Shalev, A. 
   Data-driven Cluster Analysis Reveals Increased Risk for Severe Insulin-deficient Diabetes in Black/African Americans. <em>J Clin Endocrinol Metab</em> <strong>2025</strong>, 110, 387-395, <a href ="https://doi.org/10.1210/clinem/dgae516">doi:10.1210/clinem/dgae516</a></>
 );
 
 const reference_13 = (
-  <>Gomez-Peralta, F.; Pines-Corrales, P.J.; Santos, E.; Cuesta, M.; Gonzalez-Albarran, O.; Azriel, S.; On Behalf The Agora Diabetes Collaborative, G. Diabetes Management Based on the Phenotype and Stage of the Disease: \
+  <>Gomez-Peralta, F.; Pines-Corrales, P.J.; Santos, E.; Cuesta, M.; Gonzalez-Albarran, O.; Azriel, S.; On Behalf The Agora Diabetes Collaborative, G. Diabetes Management Based on the Phenotype and Stage of the Disease: 
   An Expert Proposal from the AGORA Diabetes Collaborative Group. <em>J Clin Med</em> <strong>2024</strong>, 13, <a href ="https://doi.org/10.3390/jcm13164839">doi:10.3390/jcm13164839</a></>
 );
 
 const reference_14 = (
-  <>Xing, L.; Peng, F.; Liang, Q.; Dai, X.; Ren, J.; Wu, H.; Yang, S.; Zhu, Y.; Jia, L.; Zhao, S. Clinical Characteristics and Risk of Diabetic Complications in Data-Driven Clusters Among Type 2 Diabetes. \
-  <em>Front Endocrinol (Lausanne)</em> <strong>2021</strong>, 12, 617628, <a href ="https://doi.org/10.3389/fendo.2021.617628">doi:10.3389/fendo.2021.617628</a></>
+  <>Xing, L.; Peng, F.; Liang, Q.; Dai, X.; Ren, J.; Wu, H.; Yang, S.; Zhu, Y.; Jia, L.; Zhao, S. Clinical Characteristics and Risk of Diabetic Complications in Data-Driven Clusters Among Type 2 Diabetes. 
+  <em> Front Endocrinol (Lausanne)</em> <strong>2021</strong>, 12, 617628, <a href ="https://doi.org/10.3389/fendo.2021.617628">doi:10.3389/fendo.2021.617628</a></>
 );
 
 const reference_15 = (
@@ -319,7 +319,8 @@ function App() {
         <h2>Diabetes Cluster Prediction</h2>
         <p style={{ marginBottom: '20px' }}>
           <ul style={{ paddingLeft: '20px' }}>
-            <li>This tool should not be used for monogenic forms of diabetes.</li>
+            <li>This tool should not be used for monogenic or gestational forms of diabetes.</li>
+            <li> This tool is for research purposes only.</li>
             <li>The model has an average sensitivity of 93% and specificity of 98%.</li>
           </ul> 
         </p>
@@ -458,28 +459,30 @@ function App() {
             </div>
 
             {/* Display the probabilities */}
-            <div style={{ marginTop: '20px' }}>
-              <p><strong>Probabilities:</strong></p>
-              <div>SAID: {(result.probabilities[0] * 100).toFixed(2)}%</div>
-              <div>SIDD: {(result.probabilities[1] * 100).toFixed(2)}%</div>
-              <div>SIRD: {(result.probabilities[2] * 100).toFixed(2)}%</div>
-              <div>MOD: {(result.probabilities[3] * 100).toFixed(2)}%</div>
-              <div>MARD: {(result.probabilities[4] * 100).toFixed(2)}%</div>
+            <div style={{ marginTop: '20px'}}>
+              <p><strong>Probability Per Cluster:</strong></p>
+              <div style={{ marginTop: '8px'}}>
+                <div>SAID: {(result.probabilities[0] * 100).toFixed(2)}%</div>
+                <div>SIDD: {(result.probabilities[1] * 100).toFixed(2)}%</div>
+                <div>SIRD: {(result.probabilities[2] * 100).toFixed(2)}%</div>
+                <div>MOD: {(result.probabilities[3] * 100).toFixed(2)}%</div>
+                <div>MARD: {(result.probabilities[4] * 100).toFixed(2)}%</div>
+              </div> 
             </div>
 
             {/* Display SHAP explanation plot */}
             {result.shap_plot && (
-              <div style={{ marginTop: '30px' }}>
-                <h4>Feature Importance (SHAP Analysis):</h4>
-                <p style={{ fontSize: '0.9em', color: '#666', marginBottom: '10px' }}>
-                  This chart shows how each input feature contributed to this specific prediction.
-                  Features pushing the prediction higher are shown in red, while features pushing it lower are shown in blue.
-                </p>
+              <div style={{ marginTop: '20px' }}>
+                <h4 style={{ marginBottom: '12px' }}> Feature Importance (SHAP Analysis):</h4>
                 <img
                   src={`data:image/png;base64,${result.shap_plot}`}
                   alt="SHAP Feature Importance"
-                  style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
+                  style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px' }}
                 />
+                <p style={{ fontSize: '1.0em', color: '#000', marginTop: '8px', marginBottom: '8px' }}>
+                  This chart shows how each input feature contributed to this specific prediction.
+                  Features pushing the prediction higher are shown in red, while features pushing it lower are shown in blue.
+                </p>
               </div>
             )}
           </div>
