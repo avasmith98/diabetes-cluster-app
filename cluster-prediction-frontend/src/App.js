@@ -45,8 +45,6 @@ function CollapsibleReferences({ references }) {
   );
 }
 
-
-
 const reference_1 = (
   <>Toledano, Y.; Knobler, H. Not All Patients with Type 2 Diabetes Are Equal. <em>Am J Med</em> <strong>2021</strong>, 134, 707-709, <a href ="https://doi.org/10.1016/j.amjmed.2021.02.005">doi:10.1016/j.amjmed.2021.02.005</a></>
 );
@@ -61,85 +59,71 @@ const reference_3 = (
 );
 
 const reference_4 = (
-  <>Somolinos-Simon, F.J.; Garcia-Saez, G.; Tapia-Galisteo, J.; Corcoy, R.; Elena Hernando, M. Cluster analysis of adult individuals with type 1 diabetes: Treatment pathways and complications over a five-year follow-up period.\
-  <em>Diabetes Res Clin Pract</em> <strong>2024</strong>, 215, 111803, <a href ="https://doi.org/10.1016/j.diabres.2024.111803">doi:10.1016/j.diabres.2024.111803</a></>
+  <>American Diabetes Association Professional Practice Committee for, D. 9. 
+  Pharmacologic Approaches to Glycemic Treatment: Standards of Care in Diabetes-2026. 
+  <em>Diabetes Care</em> <strong>2026</strong>, 49, S183-S215, <a href = "doi:10.2337/dc26-S009">doi:10.2337/dc26-S009</a></>
 );
 
 const reference_5 = (
-  <>Kahkoska, A.R.; Nguyen, C.T.; Jiang, X.; Adair, L.A.; Agarwal, S.; Aiello, A.E.; Burger, K.S.; Buse, J.B.; Dabelea, D.; Dolan, L.M.; et al. 
-  Characterizing the weight-glycemia phenotypes of type 1 diabetes in youth and young adulthood. <em>BMJ Open Diabetes Res Care</em> <strong>2020</strong>, 8, <a href ="https://doi.org/10.1136/bmjdrc-2019-000886">doi:10.1136/bmjdrc-2019-000886</a></>
-);
-
-const reference_6 = (
-  <>Battaglia, M.; Ahmed, S.; Anderson, M.S.; Atkinson, M.A.; Becker, D.; Bingley, P.J.; Bosi, E.; Brusko, T.M.; DiMeglio, L.A.; Evans-Molina, C.; et al. 
-  Introducing the Endotype Concept to Address the Challenge of Disease Heterogeneity in Type 1 Diabetes. <em>Diabetes Care</em> <strong>2020</strong>, 43, 5-12, <a href ="https://doi.org/10.2337/dc19-0880">doi:10.2337/dc19-0880</a></>
-);
-
-const reference_7 = (
-  <>American Diabetes Association Professional Practice Committee for, D. 9. 
-  Pharmacologic Approaches to Glycemic Treatment: Standards of Care in Diabetes-2026. <em>Diabetes Care</em> <strong>2026</strong>, 49, S183-S215, <a href ="https://doi.org/10.2337/dc26-S009">doi:10.2337/dc26-S009</a></>
-);
-
-const reference_8 = (
-  <>American Diabetes Association Professional Practice Committee for, D. 3. 
-  Prevention or Delay of Diabetes and Associated Comorbidities: Standards of Care in Diabetes-2026. <em>Diabetes Care</em> <strong>2026</strong>, 49, S50-S60, <a href ="https://doi.org/10.2337/dc26-S003">doi:10.2337/dc26-S003</a></>
-);
-
-const reference_9 = (
   <>Buzzetti, R.; Tuomi, T.; Mauricio, D.; Pietropaolo, M.; Zhou, Z.; Pozzilli, P.; Leslie, R.D. Management of Latent Autoimmune Diabetes in Adults: 
   A Consensus Statement From an International Expert Panel. <em>Diabetes</em> <strong>2020</strong>, 69, 2037-2047, <a href ="https://doi.org/10.2337/dbi20-0017">doi:10.2337/dbi20-0017</a></>
 );
 
-const reference_10 = (
+const reference_6 = (
+  <>American Diabetes Association Professional Practice Committee for, D. 3. 
+  Prevention or Delay of Diabetes and Associated Comorbidities: Standards of Care in Diabetes-2026. 
+  <em>Diabetes Care</em> <strong>2026</strong>, 49, S50-S60, <a href ="https://doi.org/10.2337/dc26-S003">doi:10.2337/dc26-S003</a></>
+);
+
+const reference_7 = (
   <>Misra, S.; Wagner, R.; Ozkan, B.; Schon, M.; Sevilla-Gonzalez, M.; Prystupa, K.; Wang, C.C.; Kreienkamp, R.J.; Cromer, S.J.; Rooney, M.R.; et al.
   Precision subclassification of type 2 diabetes: a systematic review. <em>Commun Med (Lond)</em> <strong>2023</strong>, 3, 138, <a href ="https://doi.org/10.1038/s43856-023-00360-3">doi:10.1038/s43856-023-00360-3</a></>
 );
 
-const reference_11 = (
+const reference_8 = (
   <>Li, X.; Donnelly, L.A.; Slieker, R.C.; Beulens, J.W.J.; t Hart, L.M.; Elders, P.J.M.; Pearson, E.R.; van Giessen, A.; Leal, J.; Feenstra, T. 
   Trajectories of clinical characteristics, complications and treatment choices in data-driven subgroups of type 2 diabetes. <em>Diabetologia</em> <strong>2024</strong>, 67, 1343-1355, <a href ="https://doi.org/10.1007/s00125-024-06147-y">doi:10.1007/s00125-024-06147-y</a></>
 );
 
-const reference_12 = (
+const reference_9 = (
   <>Lu, B.; Li, P.; Crouse, A.B.; Grimes, T.; Might, M.; Ovalle, F.; Shalev, A. 
   Data-driven Cluster Analysis Reveals Increased Risk for Severe Insulin-deficient Diabetes in Black/African Americans. <em>J Clin Endocrinol Metab</em> <strong>2025</strong>, 110, 387-395, <a href ="https://doi.org/10.1210/clinem/dgae516">doi:10.1210/clinem/dgae516</a></>
 );
 
-const reference_13 = (
+const reference_10 = (
   <>Gomez-Peralta, F.; Pines-Corrales, P.J.; Santos, E.; Cuesta, M.; Gonzalez-Albarran, O.; Azriel, S.; On Behalf The Agora Diabetes Collaborative, G. Diabetes Management Based on the Phenotype and Stage of the Disease: 
   An Expert Proposal from the AGORA Diabetes Collaborative Group. <em>J Clin Med</em> <strong>2024</strong>, 13, <a href ="https://doi.org/10.3390/jcm13164839">doi:10.3390/jcm13164839</a></>
 );
 
-const reference_14 = (
+const reference_11 = (
   <>Xing, L.; Peng, F.; Liang, Q.; Dai, X.; Ren, J.; Wu, H.; Yang, S.; Zhu, Y.; Jia, L.; Zhao, S. Clinical Characteristics and Risk of Diabetic Complications in Data-Driven Clusters Among Type 2 Diabetes. 
   <em> Front Endocrinol (Lausanne)</em> <strong>2021</strong>, 12, 617628, <a href ="https://doi.org/10.3389/fendo.2021.617628">doi:10.3389/fendo.2021.617628</a></>
 );
 
-const reference_15 = (
-  <>American Diabetes Association Professional Practice Committee for, D. 13. Older Adults: Standards of Care in Diabetes-2026. <em>Diabetes Care</em> <strong>2026</strong>, 49, S277-S296, <a href ="https://doi.org/10.2337/dc26-S013">doi:10.2337/dc26-S013</a></>
+const reference_12 = (
+  <>American Diabetes Association Professional Practice Committee for, D. 13. 
+  Older Adults: Standards of Care in Diabetes-2026. 
+  <em>Diabetes Care</em> <strong>2026</strong>, 49, S277-S296, <a href ="https://doi.org/10.2337/dc26-S013">doi:10.2337/dc26-S013</a></>
 );
 
 const reference_SAID = [
   reference_1, 
   reference_2, 
   reference_3, 
-  reference_7,
-  reference_4, 
+  reference_4,
   reference_5, 
-  reference_6,
-  reference_9, 
-  reference_8    
+  reference_6,    
 ];
 
 const reference_SIDD = [
   reference_2,
   reference_3,
-  reference_10,
-  reference_11,
-  reference_12,
-  reference_1,
-  reference_13,
   reference_7,
+  reference_8,
+  reference_9,
+  reference_1,
+  reference_10,
+  reference_4
 ];
   
 
@@ -147,25 +131,25 @@ const reference_SIRD = [
   reference_1,
   reference_2,
   reference_3,
+  reference_7,
+  reference_8,
   reference_10,
-  reference_11,
-  reference_13,
-  reference_7
+  reference_4
 ];
 
 const reference_MOD = [
-  reference_12,
-  reference_14,
+  reference_9,
+  reference_11,
   reference_2,
-  reference_13
+  reference_10
 ];  
 
 const reference_MARD = [ 
- reference_12,
- reference_14,
+ reference_9,
+ reference_11,
  reference_2,
- reference_13,
- reference_15
+ reference_10,
+ reference_12
 ]; 
 
 const API_URL =
@@ -193,8 +177,8 @@ function App() {
        The SAID cluster is associated with an elevated risk of diabetic ketoacidosis, often at diagnosis (DKA), and development of microvascular complications [1-3].
 
        For most individuals with T1D, early and aggressive insulin replacement is recommended, and the use of SGLT2 inhibitors is potentially unsafe [1,4]. 
-       For individuals with latent autoimmune diabetes in adults (LADA), a subset of T1D [5-7], approved guidelines for T1D or modified guidelines for type 2 diabetes (T2D) may be considered depending on the individual’s remaining beta cell function [8]. 
-       Teplizumab may be considered to delay the onset of symptomatic T1D [9]. 
+       For individuals with latent autoimmune diabetes in adults (LADA), a subset of T1D [5], approved guidelines for T1D or modified guidelines for type 2 diabetes (T2D) may be considered depending on the individual’s remaining beta cell function [5]. 
+       Teplizumab may be considered to delay the onset of symptomatic T1D [6]. 
       <CollapsibleReferences references={reference_SAID} />
       </>
     ),
