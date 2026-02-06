@@ -70,37 +70,31 @@ const reference_5 = (
 );
 
 const reference_6 = (
-  <>American Diabetes Association Professional Practice Committee for, D. 3. 
-  Prevention or Delay of Diabetes and Associated Comorbidities: Standards of Care in Diabetes-2026. 
-  <em>Diabetes Care</em> <strong>2026</strong>, 49, S50-S60, <a href ="https://doi.org/10.2337/dc26-S003">doi:10.2337/dc26-S003</a></>
-);
-
-const reference_7 = (
   <>Misra, S.; Wagner, R.; Ozkan, B.; Schon, M.; Sevilla-Gonzalez, M.; Prystupa, K.; Wang, C.C.; Kreienkamp, R.J.; Cromer, S.J.; Rooney, M.R.; et al.
   Precision subclassification of type 2 diabetes: a systematic review. <em>Commun Med (Lond)</em> <strong>2023</strong>, 3, 138, <a href ="https://doi.org/10.1038/s43856-023-00360-3">doi:10.1038/s43856-023-00360-3</a></>
 );
 
-const reference_8 = (
+const reference_7 = (
   <>Li, X.; Donnelly, L.A.; Slieker, R.C.; Beulens, J.W.J.; t Hart, L.M.; Elders, P.J.M.; Pearson, E.R.; van Giessen, A.; Leal, J.; Feenstra, T. 
   Trajectories of clinical characteristics, complications and treatment choices in data-driven subgroups of type 2 diabetes. <em>Diabetologia</em> <strong>2024</strong>, 67, 1343-1355, <a href ="https://doi.org/10.1007/s00125-024-06147-y">doi:10.1007/s00125-024-06147-y</a></>
 );
 
-const reference_9 = (
+const reference_8 = (
   <>Lu, B.; Li, P.; Crouse, A.B.; Grimes, T.; Might, M.; Ovalle, F.; Shalev, A. 
   Data-driven Cluster Analysis Reveals Increased Risk for Severe Insulin-deficient Diabetes in Black/African Americans. <em>J Clin Endocrinol Metab</em> <strong>2025</strong>, 110, 387-395, <a href ="https://doi.org/10.1210/clinem/dgae516">doi:10.1210/clinem/dgae516</a></>
 );
 
-const reference_10 = (
+const reference_9 = (
   <>Gomez-Peralta, F.; Pines-Corrales, P.J.; Santos, E.; Cuesta, M.; Gonzalez-Albarran, O.; Azriel, S.; On Behalf The Agora Diabetes Collaborative, G. Diabetes Management Based on the Phenotype and Stage of the Disease: 
   An Expert Proposal from the AGORA Diabetes Collaborative Group. <em>J Clin Med</em> <strong>2024</strong>, 13, <a href ="https://doi.org/10.3390/jcm13164839">doi:10.3390/jcm13164839</a></>
 );
 
-const reference_11 = (
+const reference_10 = (
   <>Xing, L.; Peng, F.; Liang, Q.; Dai, X.; Ren, J.; Wu, H.; Yang, S.; Zhu, Y.; Jia, L.; Zhao, S. Clinical Characteristics and Risk of Diabetic Complications in Data-Driven Clusters Among Type 2 Diabetes. 
   <em> Front Endocrinol (Lausanne)</em> <strong>2021</strong>, 12, 617628, <a href ="https://doi.org/10.3389/fendo.2021.617628">doi:10.3389/fendo.2021.617628</a></>
 );
 
-const reference_12 = (
+const reference_11 = (
   <>American Diabetes Association Professional Practice Committee for, D. 13. 
   Older Adults: Standards of Care in Diabetes-2026. 
   <em>Diabetes Care</em> <strong>2026</strong>, 49, S277-S296, <a href ="https://doi.org/10.2337/dc26-S013">doi:10.2337/dc26-S013</a></>
@@ -111,18 +105,17 @@ const reference_SAID = [
   reference_2, 
   reference_3, 
   reference_4,
-  reference_5, 
-  reference_6,    
+  reference_5,    
 ];
 
 const reference_SIDD = [
   reference_2,
   reference_3,
+  reference_6,
   reference_7,
   reference_8,
-  reference_9,
   reference_1,
-  reference_10,
+  reference_9,
   reference_4
 ];
   
@@ -131,25 +124,24 @@ const reference_SIRD = [
   reference_1,
   reference_2,
   reference_3,
+  reference_6,
   reference_7,
-  reference_8,
-  reference_10,
-  reference_4
+  reference_9
 ];
 
 const reference_MOD = [
-  reference_9,
-  reference_11,
+  reference_8,
+  reference_10,
   reference_2,
-  reference_10
+  reference_9
 ];  
 
 const reference_MARD = [ 
- reference_9,
- reference_11,
- reference_2,
+ reference_8,
  reference_10,
- reference_12
+ reference_2,
+ reference_9,
+ reference_11
 ]; 
 
 const API_URL =
@@ -172,48 +164,46 @@ function App() {
   const clusterExplanations = {
     SAID: (
       <>The provided input most closely aligns with the <strong> Severe Autoimmune Diabetes (SAID) cluster. </strong>
-       SAID is defined by the presence of positive glutamic acid decarboxylase autoantibodies (GADA) at the time of diagnosis, so cases meeting this criterion are always classified as such. 
-       SAID is consistent with type 1 diabetes (T1D), characterized by the autoimmune destruction of insulin-producing beta cells and eventual reliance on insulin replacement therapy. 
-       The SAID cluster is associated with an elevated risk of diabetic ketoacidosis, often at diagnosis (DKA), and development of microvascular complications [1-3].
+       SAID is defined by the presence of positive glutamic acid decarboxylase autoantibodies at the time of diagnosis, so cases meeting this criterion are always classified as such. 
+       SAID is consistent with type 1 diabetes (T1D), characterized by the autoimmune destruction of insulin-producing beta cells and reliance on insulin replacement therapy. 
+       The SAID cluster is associated with an elevated risk of diabetic ketoacidosis, often at diagnosis, and development of microvascular complications [1-3].
 
        For most individuals with T1D, early and aggressive insulin replacement is recommended, and the use of SGLT2 inhibitors is potentially unsafe [1,4]. 
-       For individuals with latent autoimmune diabetes in adults (LADA), a subset of T1D [5], approved guidelines for T1D or modified guidelines for type 2 diabetes (T2D) may be considered depending on the individual’s remaining beta cell function [5]. 
-       Teplizumab may be considered to delay the onset of symptomatic T1D [6]. 
+       For individuals with latent autoimmune diabetes in adults (LADA), a subset of T1D [5], approved guidelines for T1D or modified guidelines for type 2 diabetes may be considered depending on the individual’s remaining beta cell function [5].  
       <CollapsibleReferences references={reference_SAID} />
       </>
     ),
     SIDD: (
-      <>The provided input most closely aligns with <strong> Severe Insulin-Deficient Diabetes (SIDD) </strong>, a subset of type 2 diabetes (T2D). 
-      The SIDD cluster is characterized by high HbA1c, insulin deficiency as indicated by low C-peptide, and absence of glutamic acid decarboxylase autoantibodies (GADA). 
+      <>The provided input most closely aligns with <strong> Severe Insulin-Deficient Diabetes (SIDD) </strong>, a subset of type 2 diabetes. 
+      The SIDD cluster is characterized by high HbA1c, insulin deficiency as indicated by low C-peptide, and absence of glutamic acid decarboxylase autoantibodies. 
       This cluster has been associated with the highest risk of micro- and macrovascular complications [1,2,3-5]. 
       Aggressive glucose control is recommended [6]. 
       Insulin secretagogues, including incretin-based therapies, could be considered [6,7], and early treatment with insulin might be needed and beneficial [3,6,7,8]. 
-      SGLT2 inhibitors may also be considered in those with heart or kidney disease, but their use should be carefully weighed against the risk of DKA and closely monitored [8].
+      SGLT2 inhibitors may also be considered in those with heart or kidney disease, but their use should be carefully weighed against the risk of diabetic ketoacidosis and closely monitored [8].
       <CollapsibleReferences references={reference_SIDD} />
       </>
     ),
     SIRD: (
-      <>The provided input most closely aligns with <strong>Severe Insulin-Resistant Diabetes (SIRD)</strong>, a subset of type 2 diabetes (T2D). 
-      The SIRD cluster is characterized by high insulin resistance as indicated by high C-peptide and glucose, and the absence of glutamic acid decarboxylase autoantibodies (GABA). 
-      Individuals in this cluster may be at higher risk for complications including nephropathy, metabolic dysfunction-associated steatotic liver disease (MASLD), and cardiovascular disease (CVD) [1-3,4,5]. 
+      <>The provided input most closely aligns with <strong>Severe Insulin-Resistant Diabetes (SIRD)</strong>, a subset of type 2 diabetes. 
+      The SIRD cluster is characterized by high insulin resistance as indicated by high C-peptide and glucose, and the absence of glutamic acid decarboxylase autoantibodies. 
+      Individuals in this cluster may be at higher risk for complications including nephropathy, metabolic dysfunction-associated steatotic liver disease, and cardiovascular disease [1-3,4,5]. 
       Aggressive glucose control is recommended [1].
       Early treatment with SGLT2 inhibitors or GLP1 RAs as well as adjuvant therapy with metformin could be considered [1,2,6]. 
-      Insulin may be considered later in the disease process to help achieve glycemic goal of HbA1c under 8% [6].
-      Pioglitazone could be considered in those with evidence of metabolic dysfunction-associated steatohepatitis (MASH) [1,6,7].
+      Insulin may be considered later in the disease process to help achieve better glycemic control [6].
       <CollapsibleReferences references={reference_SIRD} />
       </>
     ),
     MOD: (
-      <>The provided input most closely aligns with <strong>Mild Obesity-Related Diabetes (MOD)</strong>, a subset of type 2 diabetes (T2D). 
-      The MOD cluster is characterized by higher BMI, the absence of glutamic acid decarboxylase autoantibodies (GABA), and a lower complication risk [1,2]. 
+      <>The provided input most closely aligns with <strong>Mild Obesity-Related Diabetes (MOD)</strong>, a subset of type 2 diabetes. 
+      The MOD cluster is characterized by higher BMI, the absence of glutamic acid decarboxylase autoantibodies, and a lower complication risk [1,2]. 
       Weight loss with diet and exercise could be considered [3,4].
       Metformin, SGLT2 inhibitors, and GLP1 RAs might be beneficial as first line pharmacological therapies [3,4].
       <CollapsibleReferences references={reference_MOD} />
       </>
     ),
     MARD: (
-      <>The provided input most closely aligns with <strong>Mild Age-Related Diabetes (MARD)</strong>, a subset of type 2 diabetes (T2D). 
-      The MARD cluster is characterized by higher age at diagnosis, the absence of glutamic acid decarboxylase autoantibodies (GABA), and a lower complication risk [1,2].
+      <>The provided input most closely aligns with <strong>Mild Age-Related Diabetes (MARD)</strong>, a subset of type 2 diabetes. 
+      The MARD cluster is characterized by higher age at diagnosis, the absence of glutamic acid decarboxylase autoantibodies, and a lower complication risk [1,2].
       A more conservative therapeutic approach with lifestyle modifications and medications with low risk of hypoglycemia might be appropriate [3,4,5].
       <CollapsibleReferences references={reference_MARD} />
       </>
