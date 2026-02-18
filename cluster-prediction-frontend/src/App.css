@@ -22,9 +22,48 @@ select option {
 
 body {
   font-family: Arial, sans-serif;
+  font-size: 16px;
   background-color: #f4f4f4;
   height: 100vh;
   overflow-y: auto; /* Enable full-page scrolling */
+}
+
+h2 {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.app-description {
+  text-align: justify;
+  color: #000;
+  margin-bottom: 20px;
+}
+
+.notice-box {
+  background-color: #fafafa;
+  border: 1px solid #e8e8e8;
+  border-radius: 5px;
+  padding: 12px 15px;
+  margin-bottom: 20px;
+}
+
+.notice-box ul {
+  margin: 6px 0 0 0;
+  padding-left: 20px;
+}
+
+.notice-box li {
+  margin-bottom: 2px;
+}
+
+
+h3 {
+  font-size: 20px;
+}
+
+h4 {
+  font-size: 18px;
 }
 
 .app-container {
@@ -65,21 +104,16 @@ body {
   margin-top: 20px;
   background-color: #f9f9f9;
   border-radius: 10px;
+  text-align: left;
 }
 
 .explanation-box h4 {
   margin-bottom: 10px;
-  font-size: 18px;
   font-weight: bold;
-}
-
-h2 {
   text-align: center;
-  margin-bottom: 10px; /* Reduce space for smaller screens */
 }
 
 .input-group {
-  margin-right: 10px;
   margin-bottom: 10px;
 }
 
@@ -87,6 +121,21 @@ h2 {
   display: block;
   margin-bottom: 3px;
   font-weight: bold;
+}
+
+.input-row {
+  display: flex;
+  gap: 10px;
+}
+
+.input-row input[type="number"] {
+  flex: 1.2;
+  min-width: 0;
+}
+
+.input-row select {
+  flex: 1;
+  min-width: 0;
 }
 
 input[type="number"],
@@ -138,8 +187,102 @@ input::placeholder {
   margin-bottom: 10px;
 }
 
-.result-container div {
-  margin-bottom: 5px;
+.result-container > p {
+  margin-bottom: 10px;
+}
+
+.probabilities-section {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.probabilities-section h4 {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.probabilities-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.probability-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.probability-item .label {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.probability-item .value {
+  font-family: monospace;
+}
+
+.shap-section {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.shap-section h4 {
+  margin-bottom: 12px;
+}
+
+.shap-section p {
+  text-align: left;
+  font-size: 16px;
+  color: #000;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.shap-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.references-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.references-button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.references-button:hover {
+  background-color: #0056b3;
+}
+
+.references-list-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.references-list {
+  text-align: left;
+  max-width: 600px;
+  padding-left: 20px;
+}
+
+.references-list li {
+  margin-bottom: 8px;
 }
 
 /* Responsive behavior for smaller screens */

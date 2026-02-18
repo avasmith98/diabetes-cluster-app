@@ -6,37 +6,20 @@ function CollapsibleReferences({ references }) {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
-    <div style={{ marginTop: '20px', textAlign: 'center' }}>
-      {/* Centered button */}
+    <div className="references-container">
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        style={{
-          background: '#007bff',
-          color: 'white',
-          border: 'none',
-          padding: '6px 12px',
-          borderRadius: '5px',
-          cursor: 'pointer',
-          marginBottom: '10px'
-        }}
+        className="references-button"
       >
         {isOpen ? 'Hide References' : 'Show References'}
       </button>
 
       {isOpen && (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <ol
-            style={{
-              textAlign: 'left',      
-              maxWidth: '600px',      
-              paddingLeft: '20px'
-            }}
-          >
+        <div className="references-list-wrapper">
+          <ol className="references-list">
             {references.map((ref, index) => (
-              <li key={index} style={{ marginBottom: '8px' }}>
-                {ref}
-              </li>
+              <li key={index}>{ref}</li>
             ))}
           </ol>
         </div>
@@ -290,26 +273,25 @@ function App() {
   return (
     <div className="app-container">
       <div className="form-container">
-        <h2>Diabetes Cluster Prediction</h2>
-        <p style={{ marginBottom: '20px' }}>
-          <ul style={{ paddingLeft: '20px' }}>
-            <li>This tool should not be used for monogenic or gestational forms of diabetes.</li>
-            <li> This tool is for research purposes only.</li>
-            <li>The model has an average sensitivity of 93% and specificity of 98%.</li>
-          </ul> 
+        <h2>Diabetes Cluster Prediction Tool</h2>
+        <p className="app-description">
+          This tool uses machine learning to classify patients into one of five diabetes subtypes based on clinical measurements at diagnosis. Understanding a patient's cluster may help guide personalized treatment decisions. (Average sensitivity: 93%, specificity: 98%).
         </p>
-        
-        <p style={{ marginBottom: '20px' }}>
-        Next, please enter all values as recorded at the time or closest to the patient’s <b>initial diabetes diagnosis</b>.
-        </p>
+        <div className="notice-box">
+          <strong>Instructions:</strong>
+          <ul>
+            <li>This tool is for research purposes only and should not be used for monogenic or gestational forms of diabetes.</li>
+            <li>Please enter all values as recorded at or near the time of the patient's <strong>initial diabetes diagnosis</strong>.</li>
+          </ul>
+        </div>
 
         <form onSubmit={handleSubmit} className="prediction-form">
           <div className="input-group">
             <label>GAD antibodies:</label>
-            <select 
-              name="gad" 
-              value={inputs.gad} 
-              onChange={handleChange} 
+            <select
+              name="gad"
+              value={inputs.gad}
+              onChange={handleChange}
               required
               className={inputs.gad === '' ? 'placeholder' : 'valid'}
             >
@@ -320,63 +302,61 @@ function App() {
           </div>
 
           <div className="input-group">
-            <label> HbA1c (%):</label>
-            <input 
-              type="number" 
-              name="hba1c" 
-              value={inputs.hba1c} 
-              onChange={handleChange} 
-              placeholder="HbA1c (%)" 
-              required 
+            <label>HbA1c (%):</label>
+            <input
+              type="number"
+              name="hba1c"
+              value={inputs.hba1c}
+              onChange={handleChange}
+              placeholder="HbA1c (%)"
+              required
             />
           </div>
 
           <div className="input-group">
             <label>BMI (kg/m²):</label>
-            <input 
-              type="number" 
-              name="bmi" 
-              value={inputs.bmi} 
-              onChange={handleChange} 
-              placeholder="BMI (kg/m²)" 
-              required 
+            <input
+              type="number"
+              name="bmi"
+              value={inputs.bmi}
+              onChange={handleChange}
+              placeholder="BMI (kg/m²)"
+              required
             />
           </div>
 
           <div className="input-group">
             <label>Age (years):</label>
-            <input 
-              type="number" 
-              name="age" 
-              value={inputs.age} 
-              onChange={handleChange} 
-              placeholder="Age (Years)" 
-              required 
+            <input
+              type="number"
+              name="age"
+              value={inputs.age}
+              onChange={handleChange}
+              placeholder="Age (years)"
+              required
             />
           </div>
 
           <div className="input-group">
             <label>C-peptide:</label>
-            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-              <input 
-                type="number" 
-                name="cpeptide" 
-                value={inputs.cpeptide} 
-                onChange={handleChange} 
-                placeholder="C-peptide" 
-                required 
-                style={{ width: '55%' }}
+            <div className="input-row">
+              <input
+                type="number"
+                name="cpeptide"
+                value={inputs.cpeptide}
+                onChange={handleChange}
+                placeholder="C-peptide"
+                required
               />
-              <select 
-                name="cpeptideUnit" 
-                value={cpeptideUnit} 
+              <select
+                name="cpeptideUnit"
+                value={cpeptideUnit}
                 onChange={(e) => setCpeptideUnit(e.target.value)}
                 required
                 className={cpeptideUnit === '' ? 'placeholder' : 'valid'}
-                style={{ width: '45%' }}
               >
                 <option value="" disabled hidden>Select Unit</option>
-                <option value="ng/mL">ng/mL</option> 
+                <option value="ng/mL">ng/mL</option>
                 <option value="nmol/L">nmol/L</option>
               </select>
             </div>
@@ -384,27 +364,25 @@ function App() {
 
           <div className="input-group">
             <label>Glucose:</label>
-            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-              <input 
-                type="number" 
-                name="glucose" 
-                value={inputs.glucose} 
-                onChange={handleChange} 
-                placeholder="Glucose" 
-                required 
-                style={{ width: '55%' }}
+            <div className="input-row">
+              <input
+                type="number"
+                name="glucose"
+                value={inputs.glucose}
+                onChange={handleChange}
+                placeholder="Glucose"
+                required
               />
-              <select 
-                name="glucoseUnit" 
-                value={glucoseUnit} 
+              <select
+                name="glucoseUnit"
+                value={glucoseUnit}
                 onChange={(e) => setGlucoseUnit(e.target.value)}
                 required
                 className={glucoseUnit === '' ? 'placeholder' : 'valid'}
-                style={{ width: '45%' }}
               >
                 <option value="" disabled hidden>Select Unit</option>
                 <option value="mg/dL">mg/dL</option>
-                <option value="mmol/L">mmol/L</option> 
+                <option value="mmol/L">mmol/L</option>
               </select>
             </div>
           </div>
@@ -425,7 +403,7 @@ function App() {
             <p><strong>Predicted Cluster:</strong> {result.cluster_label}</p>
 
             {/* Display the explanation for the cluster */}
-            <div className="explanation-box" style={{ marginTop: '20px' }}>
+            <div className="explanation-box">
               <h4>Cluster Explanation:</h4>
               {clusterExplanations[result.cluster_label] || (
                 <p>No explanation available for this cluster.</p>
@@ -433,27 +411,42 @@ function App() {
             </div>
 
             {/* Display the probabilities */}
-            <div style={{ marginTop: '20px'}}>
-              <p><strong>Probability Per Cluster:</strong></p>
-              <div style={{ marginTop: '8px'}}>
-                <div>SAID: {(result.probabilities[0] * 100).toFixed(2)}%</div>
-                <div>SIDD: {(result.probabilities[1] * 100).toFixed(2)}%</div>
-                <div>SIRD: {(result.probabilities[2] * 100).toFixed(2)}%</div>
-                <div>MOD: {(result.probabilities[3] * 100).toFixed(2)}%</div>
-                <div>MARD: {(result.probabilities[4] * 100).toFixed(2)}%</div>
-              </div> 
+            <div className="probabilities-section">
+              <h4>Probability Per Cluster:</h4>
+              <div className="probabilities-list">
+                <div className="probability-item">
+                  <span className="label">Severe Autoimmune Diabetes (SAID)</span>
+                  <span className="value">{(result.probabilities[0] * 100).toFixed(2)}%</span>
+                </div>
+                <div className="probability-item">
+                  <span className="label">Severe Insulin-Deficient Diabetes (SIDD)</span>
+                  <span className="value">{(result.probabilities[1] * 100).toFixed(2)}%</span>
+                </div>
+                <div className="probability-item">
+                  <span className="label">Severe Insulin-Resistant Diabetes (SIRD)</span>
+                  <span className="value">{(result.probabilities[2] * 100).toFixed(2)}%</span>
+                </div>
+                <div className="probability-item">
+                  <span className="label">Mild Obesity-Related Diabetes (MOD)</span>
+                  <span className="value">{(result.probabilities[3] * 100).toFixed(2)}%</span>
+                </div>
+                <div className="probability-item">
+                  <span className="label">Mild Age-Related Diabetes (MARD)</span>
+                  <span className="value">{(result.probabilities[4] * 100).toFixed(2)}%</span>
+                </div>
+              </div>
             </div>
 
             {/* Display SHAP explanation plot */}
             {result.shap_plot && (
-              <div style={{ marginTop: '20px' }}>
-                <h4 style={{ marginBottom: '12px' }}> Feature Importance (SHAP Analysis):</h4>
+              <div className="shap-section">
+                <h4>Feature Importance (SHAP Analysis):</h4>
                 <img
                   src={`data:image/png;base64,${result.shap_plot}`}
                   alt="SHAP Feature Importance"
-                  style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px' }}
+                  className="shap-image"
                 />
-                <p style={{ fontSize: '1.0em', color: '#000', marginTop: '8px', marginBottom: '8px' }}>
+                <p>
                   This chart shows how each input feature contributed to this specific prediction.
                   Features pushing the prediction higher are shown in red, while features pushing it lower are shown in blue.
                 </p>
