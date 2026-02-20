@@ -236,7 +236,7 @@ function App() {
       }
 
       if (cpeptideUnit === 'ng/mL') {
-        cpeptideValue = cpeptideValue * 0.3311;
+        cpeptideValue = cpeptideValue * 0.3312;
       }
 
       const someInputs = {
@@ -261,7 +261,7 @@ function App() {
     } catch (error) {
       console.error('Error:', error);
       if (error.response && error.response.data && error.response.data.error) {
-        setErrorMessage(`Server Error: ${error.response.data.error}`);
+        setErrorMessage(`${error.response.data.error}`);
       } else if (error.response && error.response.status === 400) {
         setErrorMessage('The input values are out of range. Please enter valid values within the accepted range.');
       } else {
@@ -280,7 +280,7 @@ function App() {
         <div className="notice-box">
           <strong>Instructions:</strong>
           <ul>
-            <li>This tool is for research purposes only and should not be used for monogenic or gestational forms of diabetes.</li>
+            <li>This tool should not be used for monogenic or gestational forms of diabetes.</li>
             <li>Please enter all values as recorded at or near the time of the patient's <strong>initial diabetes diagnosis</strong>.</li>
           </ul>
         </div>

@@ -50,9 +50,9 @@ def predict():
     if not (19 <= bmi <= 60):
         return jsonify({'error': 'BMI value must be between 19 and 60 kg/m2.'}), 400
     if not (0.2 <= cpeptide <= 3.5):
-        return jsonify({'error': 'C-peptide value must be between 0.2 and 3.5 nmol/L.'}), 400
+        return jsonify({'error': 'C-peptide value must be between 0.2 and 3.5 nmol/L (0.61 and 10.56 ng/mL).'}), 400
     if not (3.5 < glucose <= 25):
-        return jsonify({'error': 'Glucose value must be greater than 3.5 and less than or equal to 25 mmol/L.'}), 400
+        return jsonify({'error': 'Glucose value must be greater than 3.5 and less than or equal to 25 mmol/L (63 and 450 mg/dL).'}), 400
     if not (18 <= age <= 88):
         return jsonify({'error': 'Age must be between 18 and 88 years.'}), 400
 
