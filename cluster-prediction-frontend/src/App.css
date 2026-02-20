@@ -1,39 +1,88 @@
-/* Default style for select element when placeholder is selected */
-select.placeholder {
-  color: #999; /* Grey color for placeholder */
+/* ===== iPhone app only (Capacitor iOS) fixes ===== */
+.cap-ios *, .cap-ios *::before, .cap-ios *::after { box-sizing: border-box; }
+
+.cap-ios html,
+.cap-ios body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
-/* When a valid option is selected, the text will appear black */
-select.valid {
-  color: black; /* Black for valid options */
+/* Safe area (only iPhone app) */
+.cap-ios .app-shell {
+  min-height: 100dvh;
+  padding-top: env(safe-area-inset-top);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
 }
 
-/* Ensure that the options in the dropdown are black */
-select option {
-  color: black; /* Black for all options in the dropdown */
+/* Prevent iOS auto-zoom on focus */
+.cap-ios input,
+.cap-ios input[type="number"],
+.cap-ios select,
+.cap-ios textarea,
+.cap-ios button {
+  font-size: 16px !important;
+  line-height: 1.2;
 }
 
-/* General styling for the page */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* iPhone app only: larger form controls */
+.cap-ios input[type="number"],
+.cap-ios select,
+.cap-ios textarea {
+  height: 54px;
+  min-height: 54px;
+  padding: 12px 12px;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #111;
 }
+
+/* keep room for the select arrow */
+.cap-ios select {
+  padding-right: 36px;
+}
+
+/* Make sure result content never overflows */
+.cap-ios img,
+.cap-ios .shap-image {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Long reference text / DOI links: allow wrapping */
+.cap-ios .references-container,
+.cap-ios .references-list,
+.cap-ios .references-list li,
+.cap-ios a,
+.cap-ios .probability-item .label {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Flex children MUST be allowed to shrink */
+.cap-ios .input-row > *,
+.cap-ios .probability-item > * {
+  min-width: 0;
+}
+
+/* ===== Global styles (web + app) ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
   font-family: Arial, sans-serif;
   font-size: 16px;
   background-color: #f4f4f4;
   height: 100vh;
-  overflow-y: auto; /* Enable full-page scrolling */
-  -webkit-text-size-adjust: 100%; /* Prevent Safari from auto-scaling text */
+  overflow-y: auto;
+  -webkit-text-size-adjust: 100%;
 }
 
-h2 {
-  font-size: 24px;
-  text-align: center;
-  margin-bottom: 10px;
-}
+h2 { font-size: 24px; text-align: center; margin-bottom: 10px; }
+h3 { font-size: 20px; }
+h4 { font-size: 18px; }
 
 .app-description {
   text-align: justify;
@@ -49,28 +98,13 @@ h2 {
   margin-bottom: 20px;
 }
 
-.notice-box ul {
-  margin: 6px 0 0 0;
-  padding-left: 20px;
-}
-
-.notice-box li {
-  margin-bottom: 2px;
-}
-
-
-h3 {
-  font-size: 20px;
-}
-
-h4 {
-  font-size: 18px;
-}
+.notice-box ul { margin: 6px 0 0 0; padding-left: 20px; }
+.notice-box li { margin-bottom: 2px; }
 
 .app-container {
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Align at the top to allow full-page scrolling */
+  align-items: flex-start;
   padding: 20px;
   min-height: 100vh;
 }
@@ -82,22 +116,12 @@ h4 {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   max-width: 470px;
   width: 100%;
-  margin-bottom: 20px; /* Adding margin for spacing between form and page bottom */
+  margin-bottom: 20px;
 }
 
-.current-medications-label {
-  font-weight: bold;
-  margin-right: 10px;
-}
-
-.medication-label {
-  font-weight: normal;
-}
-
-/* Add padding and margin specifically to the last medication option (None) */
-.last-medication-option {
-  padding-bottom: 10px; 
-}
+.current-medications-label { font-weight: bold; margin-right: 10px; }
+.medication-label { font-weight: normal; }
+.last-medication-option { padding-bottom: 10px; }
 
 .explanation-box {
   border: 1px solid #ccc;
@@ -114,9 +138,7 @@ h4 {
   text-align: center;
 }
 
-.input-group {
-  margin-bottom: 10px;
-}
+.input-group { margin-bottom: 10px; }
 
 .input-group label {
   display: block;
@@ -129,25 +151,19 @@ h4 {
   gap: 10px;
 }
 
-.input-row input[type="number"] {
-  flex: 1.2;
-  min-width: 0;
-}
-
-.input-row select {
-  flex: 1;
-  min-width: 0;
-}
+.input-row input[type="number"] { flex: 1.2; min-width: 0; }
+.input-row select { flex: 1; min-width: 0; }
 
 input[type="number"],
 select {
   width: 100%;
-  padding: 8px; /* Reduce padding to fit within constraints */
+  padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 14px; /* Slightly smaller font */
-  box-sizing: border-box;
-  height: 40px; /* Ensure consistent height for both input and select */
+  font-size: 14px;   /* web default */
+  height: 40px;
+  background-color: #fff;
+  color: #111;
 }
 
 select {
@@ -161,25 +177,21 @@ select {
   padding-right: 32px;
 }
 
+/* Placeholder-like styling for selects only */
+select.placeholder { color: #999; }
+select.valid { color: #111; }
+select option { color: #111; }
+
+input::placeholder { color: #999; }
+
 /* Hide number input spinners */
 input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type="number"] {
-  -moz-appearance: textfield; /* Firefox */
-}
-
-/* Placeholder color for input fields */
-input::placeholder {
-  color: #999; /* Grey color for input placeholders */
-}
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; }
 
 .submit-button {
   width: 100%;
-  padding: 8px; /* Reduced padding */
+  padding: 8px;
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -189,14 +201,9 @@ input::placeholder {
   transition: background-color 0.3s ease;
 }
 
-.submit-button:hover {
-  background-color: #0056b3;
-}
+.submit-button:hover { background-color: #0056b3; }
 
-.error-message {
-  margin-top: 10px;
-  color: red;
-}
+.error-message { margin-top: 10px; color: red; }
 
 .result-container {
   margin-top: 15px;
@@ -206,23 +213,11 @@ input::placeholder {
   text-align: center;
 }
 
-.result-container h3 {
-  margin-bottom: 10px;
-}
+.result-container h3 { margin-bottom: 10px; }
+.result-container > p { margin-bottom: 10px; }
 
-.result-container > p {
-  margin-bottom: 10px;
-}
-
-.probabilities-section {
-  margin-top: 20px;
-  text-align: left;
-}
-
-.probabilities-section h4 {
-  text-align: center;
-  margin-bottom: 12px;
-}
+.probabilities-section { margin-top: 20px; text-align: left; }
+.probabilities-section h4 { text-align: center; margin-bottom: 12px; }
 
 .probabilities-list {
   display: flex;
@@ -241,23 +236,11 @@ input::placeholder {
   border: 1px solid #ddd;
 }
 
-.probability-item .label {
-  font-weight: 500;
-  font-size: 16px;
-}
+.probability-item .label { font-weight: 500; font-size: 16px; }
+.probability-item .value { font-family: monospace; }
 
-.probability-item .value {
-  font-family: monospace;
-}
-
-.shap-section {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.shap-section h4 {
-  margin-bottom: 12px;
-}
+.shap-section { margin-top: 20px; text-align: center; }
+.shap-section h4 { margin-bottom: 12px; }
 
 .shap-section p {
   text-align: left;
@@ -273,10 +256,7 @@ input::placeholder {
   border-radius: 8px;
 }
 
-.references-container {
-  margin-top: 20px;
-  text-align: center;
-}
+.references-container { margin-top: 20px; text-align: center; }
 
 .references-button {
   background: #007bff;
@@ -289,14 +269,9 @@ input::placeholder {
   font-size: 14px;
 }
 
-.references-button:hover {
-  background-color: #0056b3;
-}
+.references-button:hover { background-color: #0056b3; }
 
-.references-list-wrapper {
-  display: flex;
-  justify-content: center;
-}
+.references-list-wrapper { display: flex; justify-content: center; }
 
 .references-list {
   text-align: left;
@@ -304,23 +279,11 @@ input::placeholder {
   padding-left: 20px;
 }
 
-.references-list li {
-  margin-bottom: 8px;
-}
+.references-list li { margin-bottom: 8px; }
 
-/* Responsive behavior for smaller screens */
+/* Responsive behavior for smaller screens (web only) */
 @media (max-width: 768px) {
-  .form-container {
-    padding: 15px; /* Further reduce padding for smaller screens */
-  }
-
-  input[type="number"],
-  select {
-    font-size: 13px;
-    height: 35px;
-  }
-
-  .submit-button {
-    font-size: 13px;
-  }
+  .form-container { padding: 15px; }
+  input[type="number"], select { font-size: 13px; height: 35px; }
+  .submit-button { font-size: 13px; }
 }
