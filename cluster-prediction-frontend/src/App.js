@@ -284,6 +284,7 @@ function App() {
           <ul>
             <li>This tool should not be used for monogenic or gestational forms of diabetes.</li>
             <li>Please enter all values as recorded at or near the time of the patient's <strong>initial diabetes diagnosis</strong>.</li>
+            <li> Your information will be not be stored.</li>
           </ul>
         </div>
 
