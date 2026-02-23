@@ -17,38 +17,44 @@ const isIOSCapacitor = (() => {
 if (isIOSCapacitor) {
   document.documentElement.classList.add('cap-ios');
 
-  // Consolidated iOS scroll position fix for all form interactions
   let savedScrollY = 0;
 
-  const saveScroll = () => {
+  // Handle select elements
+  document.addEventListener('touchstart', (e) => {
+    const select = e.target.closest('select');
+    if (!select) return;
+
+    // Save scroll position before iOS moves anything
     savedScrollY = window.scrollY;
-  };
 
-  const restoreScroll = () => {
-    const y = savedScrollY;
-    window.scrollTo(0, y);
-    requestAnimationFrame(() => window.scrollTo(0, y));
-    setTimeout(() => window.scrollTo(0, y), 100);
-  };
+    const active = document.activeElement;
+    if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) {
+      // Blur input first, let keyboard close, then focus select
+      e.preventDefault();
+      active.blur();
 
-  // Save scroll when user starts interacting with any form element
-  const onPointerDown = (e) => {
-    if (e.target.matches('input, select, textarea, button')) {
-      saveScroll();
+      setTimeout(() => {
+        savedScrollY = window.scrollY; // Update after keyboard closed
+        select.focus();
+        // Restore after picker opens
+        setTimeout(() => window.scrollTo(0, savedScrollY), 50);
+      }, 300);
+    } else {
+      // No keyboard open - just restore scroll after picker opens
+      setTimeout(() => window.scrollTo(0, savedScrollY), 50);
     }
-  };
+  }, { passive: false, capture: true });
 
-  document.addEventListener('touchstart', onPointerDown, { passive: true, capture: true });
-  document.addEventListener('mousedown', onPointerDown, { capture: true });
-
-  // Restore scroll on focus changes (keyboard open/close, picker open)
-  document.addEventListener('focusin', restoreScroll, true);
-  document.addEventListener('focusout', restoreScroll, true);
-
-  // Restore scroll after select picker closes
+  // Restore scroll when picker closes (value selected or cancelled)
   document.addEventListener('change', (e) => {
     if (e.target.matches('select')) {
-      restoreScroll();
+      setTimeout(() => window.scrollTo(0, savedScrollY), 50);
+    }
+  }, true);
+
+  document.addEventListener('blur', (e) => {
+    if (e.target.matches('select')) {
+      setTimeout(() => window.scrollTo(0, savedScrollY), 50);
     }
   }, true);
 }

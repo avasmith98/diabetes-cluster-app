@@ -8,6 +8,11 @@
   max-width: 100%;
 }
 
+/* Guide iOS scroll-into-view behavior */
+.cap-ios .form-container {
+  scroll-padding-top: env(safe-area-inset-top, 20px);
+}
+
 /* Safe area (only iPhone app) */
 .cap-ios .app-shell {
   min-height: 100dvh;
