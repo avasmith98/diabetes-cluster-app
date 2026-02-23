@@ -275,7 +275,7 @@ function App() {
   return (
     <div className="app-container app-shell">
       <div className="form-container">
-        <h2>Diabetes Cluster Prediction Tool</h2>
+        <h2>DiaClue: Diabetes Cluster Prediction Tool</h2>
         <p className="app-description">
           This tool uses machine learning to classify patients into one of five diabetes subtypes based on clinical measurements at diagnosis. Understanding a patient's cluster may help guide personalized treatment decisions. (Average sensitivity: 93%, specificity: 98%).
         </p>
