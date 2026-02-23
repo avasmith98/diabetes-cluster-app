@@ -5,40 +5,52 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Capacitor } from '@capacitor/core';
 
-if (Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'ios') {
+// iOS platform detection - do once reliably
+const isIOSCapacitor = (() => {
+  try {
+    return Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'ios';
+  } catch {
+    return false;
+  }
+})();
+
+if (isIOSCapacitor) {
   document.documentElement.classList.add('cap-ios');
-}
 
-// iOS (Capacitor) fix: prevent select focus from jumping scroll position
-if (window.Capacitor?.getPlatform?.() === 'ios') {
-  let lastScrollY = 0;
+  // Consolidated iOS scroll position fix for all form interactions
+  let savedScrollY = 0;
 
-  // record scroll position when a select is focused
-  document.addEventListener(
-    'focusin',
-    (e) => {
-      if (e.target && e.target.tagName === 'SELECT') {
-        lastScrollY = window.scrollY || 0;
+  const saveScroll = () => {
+    savedScrollY = window.scrollY;
+  };
 
-        // iOS sometimes scrolls after focus; restore immediately after
-        setTimeout(() => window.scrollTo(0, lastScrollY), 0);
-        setTimeout(() => window.scrollTo(0, lastScrollY), 50);
-      }
-    },
-    true
-  );
+  const restoreScroll = () => {
+    const y = savedScrollY;
+    window.scrollTo(0, y);
+    requestAnimationFrame(() => window.scrollTo(0, y));
+    setTimeout(() => window.scrollTo(0, y), 100);
+  };
 
-  // iOS can also jump after closing the picker / on change
-  document.addEventListener(
-    'change',
-    (e) => {
-      if (e.target && e.target.tagName === 'SELECT') {
-        setTimeout(() => window.scrollTo(0, lastScrollY), 0);
-        setTimeout(() => window.scrollTo(0, lastScrollY), 50);
-      }
-    },
-    true
-  );
+  // Save scroll when user starts interacting with any form element
+  const onPointerDown = (e) => {
+    if (e.target.matches('input, select, textarea, button')) {
+      saveScroll();
+    }
+  };
+
+  document.addEventListener('touchstart', onPointerDown, { passive: true, capture: true });
+  document.addEventListener('mousedown', onPointerDown, { capture: true });
+
+  // Restore scroll on focus changes (keyboard open/close, picker open)
+  document.addEventListener('focusin', restoreScroll, true);
+  document.addEventListener('focusout', restoreScroll, true);
+
+  // Restore scroll after select picker closes
+  document.addEventListener('change', (e) => {
+    if (e.target.matches('select')) {
+      restoreScroll();
+    }
+  }, true);
 }
 
 

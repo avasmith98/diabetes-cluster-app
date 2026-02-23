@@ -214,40 +214,6 @@ function App() {
 
   
 
-  const isIOSCap = window.Capacitor?.getPlatform?.() === 'ios';
-
-  const onlySelectCleanlyOnIOS = (e) => {
-    if (!isIOSCap) return;
-
-    const y = window.scrollY || 0;       // remember where we are
-    const selectEl = e.currentTarget;
-
-    // If an input is focused, blur it first so the keyboard closes
-    const active = document.activeElement;
-    if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) {
-      active.blur();
-    }
-
-    // Prevent the first tap from getting "eaten" by the scroll jump
-    e.preventDefault();
-
-    // After iOS does its scroll adjustment, restore and focus the select
-    setTimeout(() => window.scrollTo(0, y), 0);
-    setTimeout(() => {
-      window.scrollTo(0, y);
-      selectEl.focus();  // opens the picker on the same tap
-    }, 50);
-  };
-
-  const keepScrollPositionOnBlurIOS = () => {
-    if (!isIOSCap) return;
-    const y = window.scrollY || 0;
-    // iOS may jump after blur/keyboard close, so restore a few times
-    setTimeout(() => window.scrollTo(0, y), 0);
-    setTimeout(() => window.scrollTo(0, y), 80);
-    setTimeout(() => window.scrollTo(0, y), 200);
-  };
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
@@ -344,7 +310,6 @@ function App() {
               name="hba1c"
               value={inputs.hba1c}
               onChange={handleChange}
-              onBlur={keepScrollPositionOnBlurIOS}
               placeholder="HbA1c (%)"
               required
             />
@@ -357,7 +322,6 @@ function App() {
               name="bmi"
               value={inputs.bmi}
               onChange={handleChange}
-              onBlur={keepScrollPositionOnBlurIOS}
               placeholder="BMI (kg/m²)"
               required
             />
@@ -370,7 +334,6 @@ function App() {
               name="age"
               value={inputs.age}
               onChange={handleChange}
-              onBlur={keepScrollPositionOnBlurIOS}
               placeholder="Age (years)"
               required
             />
@@ -384,7 +347,6 @@ function App() {
                 name="cpeptide"
                 value={inputs.cpeptide}
                 onChange={handleChange}
-                onBlur={keepScrollPositionOnBlurIOS}
                 placeholder="C-peptide"
                 required
               />
@@ -392,8 +354,6 @@ function App() {
                 name="cpeptideUnit"
                 value={cpeptideUnit}
                 onChange={(e) => setCpeptideUnit(e.target.value)}
-                onMouseDown={onlySelectCleanlyOnIOS}
-                onTouchStart={onlySelectCleanlyOnIOS}
                 required
                 className={cpeptideUnit === '' ? 'placeholder' : 'valid'}
               >
@@ -412,7 +372,6 @@ function App() {
                 name="glucose"
                 value={inputs.glucose}
                 onChange={handleChange}
-                onBlur={keepScrollPositionOnBlurIOS}
                 placeholder="Glucose"
                 required
               />
@@ -420,8 +379,6 @@ function App() {
                 name="glucoseUnit"
                 value={glucoseUnit}
                 onChange={(e) => setGlucoseUnit(e.target.value)}
-                onMouseDown={onlySelectCleanlyOnIOS}
-                onTouchStart={onlySelectCleanlyOnIOS}
                 required
                 className={glucoseUnit === '' ? 'placeholder' : 'valid'}
               >
