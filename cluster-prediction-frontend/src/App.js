@@ -275,19 +275,23 @@ function App() {
   return (
     <div className="app-container app-shell">
       <div className="form-container">
-        <h2>DiaClue: Diabetes Cluster Prediction Tool</h2>
-        <p className="app-description">
-          This tool uses machine learning to classify patients into one of five diabetes subtypes based on clinical measurements at diagnosis. Understanding a patient's cluster may help guide personalized treatment decisions. (Average sensitivity: 93%, specificity: 98%).
-        </p>
-        <div className="notice-box">
-          <strong>Instructions:</strong>
-          <ul>
-            <li>This tool should not be used for monogenic or gestational forms of diabetes.</li>
-            <li>Please enter all values as recorded at or near the time of the patient's <strong>initial diabetes diagnosis</strong>.</li>
-            <li> Your information will be not be stored.</li>
-          </ul>
+        <div className="banner">
+          <div className="banner-content">
+            <div className="banner-left">
+              <h2>DiaClue</h2>
+              <h3 className="banner-title-2">Diabetes Cluster Prediction Tool</h3>
+              <h3 className="banner-subtitle">This tool classifies patients into one of five diabetes clusters to help inform more personalized treatment decisions.</h3>
+            </div>
+            <div className="banner-right">
+              <p>Model performance: 93% sensitivity, 98% specificity</p>
+            </div>
+          </div>
         </div>
+        <div className="notice-box">
+          <strong>Patient Data Entry</strong>
+          <p className="notice-text">This tool is not intended for monogenic or gestational diabetes. Enter all values as recorded at or near the time of initial diabetes diagnosis. Your information will not be stored.</p>
 
+        <div className="data-input-box">
         <form onSubmit={handleSubmit} className="prediction-form">
           <div className="input-group">
             <label>GAD antibodies:</label>
@@ -390,8 +394,10 @@ function App() {
             </div>
           </div>
 
-          <button type="submit" className="submit-button">Predict</button>
+          <button type="submit" className="submit-button">Predict Cluster</button>
         </form>
+        </div>
+        </div>
 
         {errorMessage && (
           <div className="error-message">
@@ -402,8 +408,7 @@ function App() {
         {result && (
           <div className="result-container">
             {/* Display the resulting cluster */}
-            <h3>Prediction Result</h3>
-            <p><strong>Predicted Cluster:</strong> {result.cluster_label}</p>
+            <h3>Predicted Cluster: {result.cluster_label}</h3>
 
             {/* Display the explanation for the cluster */}
             <div className="explanation-box">
@@ -415,6 +420,7 @@ function App() {
 
             {/* Display the probabilities */}
             <div className="probabilities-section">
+              <div className="section-box">
               <h4>Probability Per Cluster:</h4>
               <div className="probabilities-list">
                 <div className="probability-item">
@@ -438,11 +444,13 @@ function App() {
                   <span className="value">{(result.probabilities[4] * 100).toFixed(2)}%</span>
                 </div>
               </div>
+              </div>
             </div>
 
             {/* Display SHAP explanation plot */}
             {result.shap_plot && (
               <div className="shap-section">
+                <div className="section-box">
                 <h4>Feature Importance (SHAP Analysis):</h4>
                 <img
                   src={`data:image/png;base64,${result.shap_plot}`}
@@ -453,6 +461,7 @@ function App() {
                   This chart shows how each input feature contributed to this specific prediction.
                   Features pushing the prediction higher are shown in red, while features pushing it lower are shown in blue.
                 </p>
+                </div>
               </div>
             )}
           </div>
