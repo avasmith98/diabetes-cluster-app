@@ -283,6 +283,7 @@ function App() {
               <h3 className="banner-subtitle">This tool classifies patients into one of five diabetes clusters to help inform more personalized treatment decisions.</h3>
             </div>
             <div className="banner-right">
+              <p>Publication: <a href="https://doi.org/10.3390/metabo16030204" target="_blank" rel="noopener noreferrer">https://doi.org/10.3390/metabo16030204</a></p>
               <p>Model performance: 93% sensitivity, 98% specificity</p>
             </div>
           </div>
