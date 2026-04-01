@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, redirect
 from flask_cors import CORS
 import os
 import joblib
@@ -14,6 +14,13 @@ from io import BytesIO
 # Create Flask app
 app = Flask(__name__, static_folder="build")
 CORS(app)  # Enable CORS for all routes
+
+# Redirect HTTP to HTTPS on Heroku
+@app.before_request
+def redirect_https():
+    if request.headers.get('X-Forwarded-Proto', 'http') == 'http':
+        url = request.url.replace('http://', 'https://', 1)
+        return redirect(url, code=301)
 
 # Load model
 MODEL_PATH = 'full_linear_rf_model.joblib'
