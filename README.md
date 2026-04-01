@@ -6,9 +6,7 @@ A web application that classifies patients into one of five diabetes clusters us
 
 ## Publication
 
-Lu B, Li P, Crouse AB, Grimes T, Might M, Ovalle F, Shalev A. DiaClue: Diabetes Cluster Prediction Tool. *Metabolites* 2024.
-
-DOI: [https://doi.org/10.3390/metabo16030204](https://doi.org/10.3390/metabo16030204)
+Lu, B., Li, P., Crouse, A. B., Grimes, T., Smith, A. N., Might, M., Ovalle, F., & Shalev, A. (2026). Validation of a Diabetes Subtype Classification Model Using Data from U.S. Adults Before and After the COVID-19 Pandemic. *Metabolites*, 16(3), 204. [https://doi.org/10.3390/metabo16030204](https://doi.org/10.3390/metabo16030204)
 
 ## Features
 
