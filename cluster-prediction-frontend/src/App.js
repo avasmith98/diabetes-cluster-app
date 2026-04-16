@@ -1,6 +1,70 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
+
+function loadGoogleAnalytics() {
+  if (document.getElementById('ga-script')) return;
+  const script = document.createElement('script');
+  script.id = 'ga-script';
+  script.src = 'https://www.googletagmanager.com/gtag/js?id=G-LHLZTJP2G0';
+  script.async = true;
+  document.head.appendChild(script);
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { window.dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-LHLZTJP2G0', { anonymize_ip: true });
+}
+
+function disableGoogleAnalytics() {
+  window['ga-disable-G-LHLZTJP2G0'] = true;
+  document.cookie.split(';').forEach(c => {
+    const name = c.trim().split('=')[0];
+    if (name.startsWith('_ga')) {
+      document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=' + window.location.hostname;
+      document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+    }
+  });
+}
+
+function CookieConsent({ onSettingsRef }) {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const consent = localStorage.getItem('cookie_consent');
+    if (consent === 'accepted') {
+      loadGoogleAnalytics();
+    } else if (consent === null) {
+      setVisible(true);
+    }
+    onSettingsRef.current = () => setVisible(true);
+  }, [onSettingsRef]);
+
+  const handleAccept = () => {
+    localStorage.setItem('cookie_consent', 'accepted');
+    window['ga-disable-G-LHLZTJP2G0'] = false;
+    loadGoogleAnalytics();
+    setVisible(false);
+  };
+
+  const handleDecline = () => {
+    localStorage.setItem('cookie_consent', 'declined');
+    disableGoogleAnalytics();
+    setVisible(false);
+  };
+
+  if (!visible) return null;
+
+  return (
+    <div className="cookie-banner">
+      <p>This site uses analytics cookies to help us understand how the tool is used. No personal health data is collected or stored.</p>
+      <div className="cookie-buttons">
+        <button className="cookie-accept" onClick={handleAccept}>Accept</button>
+        <button className="cookie-decline" onClick={handleDecline}>Decline</button>
+      </div>
+    </div>
+  );
+}
 
 function CollapsibleReferences({ references }) {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -133,6 +197,8 @@ const API_URL =
     : 'https://diabetes-cluster-b062f200dfdc.herokuapp.com/'; // Deployed Flask server
 
 function App() {
+  const cookieSettingsRef = React.useRef(null);
+
   const [inputs, setInputs] = useState({
     gad: '',
     hba1c: '',
@@ -469,7 +535,13 @@ function App() {
         )}
     
     </div>
-  </div> 
+    <CookieConsent onSettingsRef={cookieSettingsRef} />
+    <div className="cookie-settings-footer">
+      <button className="cookie-settings-link" onClick={() => cookieSettingsRef.current && cookieSettingsRef.current()}>
+        Cookie Settings
+      </button>
+    </div>
+  </div>
   );
 }
 
