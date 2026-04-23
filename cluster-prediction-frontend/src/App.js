@@ -11,9 +11,9 @@ function loadGoogleAnalytics() {
   document.head.appendChild(script);
 
   window.dataLayer = window.dataLayer || [];
-  function gtag() { window.dataLayer.push(arguments); }
-  gtag('js', new Date());
-  gtag('config', 'G-LHLZTJP2G0', { anonymize_ip: true });
+  window.gtag = function() { window.dataLayer.push(arguments); };
+  window.gtag('js', new Date());
+  window.gtag('config', 'G-LHLZTJP2G0', { anonymize_ip: true });
 }
 
 function disableGoogleAnalytics() {
@@ -321,9 +321,12 @@ function App() {
       
       // Check if we have a successful response and handle it
       if (response.data) {
-        // Store the entire result
         setResult(response.data);
-
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'predict_cluster', {
+            cluster_label: response.data.cluster_label
+          });
+        }
       }
 
     } catch (error) {
