@@ -213,10 +213,10 @@ function App() {
   const clusterExplanations = {
     SAID: (
       <>The provided input most closely aligns with the <strong> Severe Autoimmune Diabetes (SAID) cluster. </strong>
-       SAID is defined by the presence of positive glutamic acid decarboxylase autoantibodies at the time of diagnosis, so cases meeting this criterion are always classified as such. 
-       SAID is consistent with type 1 diabetes (T1D), characterized by the autoimmune destruction of insulin-producing beta cells and reliance on insulin replacement therapy. 
+       Assignment to the SAID cluster is defined by the presence of glutamic acid decarboxylase (GAD) autoantibodies at the time of diagnosis. 
        The SAID cluster is associated with an elevated risk of diabetic ketoacidosis, often at diagnosis, and development of microvascular complications [1-3].
-
+       SAID is most consistent with type 1 diabetes (T1D), characterized by the autoimmine destruction of insulin-producing beta cells and reliance on insulin replacement therapy.
+       However, assignment to the SAID cluster does not constitute a T1D diagnosis.  
        For most individuals with T1D, early and aggressive insulin replacement is recommended, and the use of SGLT2 inhibitors is potentially unsafe [1,4]. 
        For individuals with latent autoimmune diabetes in adults (LADA), a subset of T1D [5], approved guidelines for T1D or modified guidelines for type 2 diabetes may be considered depending on the individual’s remaining beta cell function [5].  
       <CollapsibleReferences references={reference_SAID} />
@@ -349,7 +349,7 @@ function App() {
             <div className="banner-left">
               <h2>DiaClue</h2>
               <h3 className="banner-title-2">Diabetes Cluster Prediction Tool</h3>
-              <h3 className="banner-subtitle">This tool classifies patients into one of five diabetes clusters to help inform more personalized treatment decisions.</h3>
+              <h3 className="banner-subtitle">This tool classifies patients into one of five diabetes clusters to help inform more personalized treatment decisions. It should not be used to replace clinical judgement.</h3>
             </div>
             <div className="banner-right">
               <p>Publication: <a href="https://doi.org/10.3390/metabo16030204" target="_blank" rel="noopener noreferrer">https://doi.org/10.3390/metabo16030204</a></p>
