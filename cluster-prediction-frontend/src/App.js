@@ -323,9 +323,7 @@ function App() {
       if (response.data) {
         setResult(response.data);
         if (typeof window.gtag === 'function') {
-          window.gtag('event', 'predict_cluster', {
-            cluster_label: response.data.cluster_label
-          });
+          window.gtag('event', 'predict_cluster');
         }
       }
 
